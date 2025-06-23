@@ -1,137 +1,206 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const imageUpload = document.getElementById('imageUpload');
-    const instagramFeed = document.getElementById('instagramFeed');
-    const generateLinkButton = document.getElementById('generateLink');
-    const uploadButton = document.getElementById('uploadButton');
-    const headerTitle = document.getElementById('headerTitle');
-    const noPostsMessage = document.getElementById('noPostsMessage');
+    const feedContainer = document.getElementById('feed-container');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const postModal = document.getElementById('post-modal');
+    const storyReelViewer = document.getElementById('story-reel-viewer');
 
-    let uploadedImagesData = []; // Almacena objetos {src: base64, description: string}
+    // Función para cerrar cualquier vista modal/pantalla completa
+    const closeView = () => {
+        modalOverlay.classList.add('hidden');
+        storyReelViewer.classList.add('hidden');
+        // Limpiar contenido previo para evitar parpadeos
+        postModal.innerHTML = '';
+        storyReelViewer.innerHTML = '';
+    };
 
-    // --- Funciones Principales ---
-
-    // Muestra una publicación en el feed
-    function displayPost(imageData, description = "Haz clic para añadir una descripción...") {
-        // Oculta el mensaje "Sube tus fotos..."
-        if (noPostsMessage) {
-            noPostsMessage.style.display = 'none';
-        }
-
-        const postDiv = document.createElement('div');
-        postDiv.classList.add('instagram-post');
-
-        const imgElement = document.createElement('img');
-        imgElement.src = imageData;
-        imgElement.alt = "Publicación de Instagram";
-
-        const textElement = document.createElement('p');
-        textElement.contentEditable = "true";
-        textElement.textContent = description;
-
-        // Guarda la descripción cuando el usuario deja de editar
-        textElement.addEventListener('blur', () => {
-            const index = Array.from(instagramFeed.children).indexOf(postDiv);
-            if (index !== -1 && uploadedImagesData[index]) {
-                uploadedImagesData[index].description = textElement.textContent;
-            }
-        });
-
-        postDiv.appendChild(imgElement);
-        postDiv.appendChild(textElement);
-        instagramFeed.appendChild(postDiv);
-    }
-
-    // --- Manejadores de Eventos ---
-
-    // Maneja la carga de imágenes
-    imageUpload.addEventListener('change', (event) => {
-        const files = event.target.files;
-        for (const file of files) {
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const base64Image = e.target.result;
-                    uploadedImagesData.push({ src: base64Image, description: "Haz clic para añadir una descripción..." });
-                    displayPost(base64Image);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert('Por favor, selecciona solo archivos de imagen.');
-            }
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeView();
         }
     });
 
-    // Genera el link compartible
-    generateLinkButton.addEventListener('click', () => {
-        if (uploadedImagesData.length === 0) {
-            alert('¡Sube al menos una imagen para generar el link!');
+    // Cerrar al hacer clic fuera del modal (para Feed/Carrusel)
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            closeView();
+        }
+    });
+
+    // Delegación de eventos para manejar clics en publicaciones
+    feedContainer.addEventListener('click', async (e) => {
+        let postCard = e.target.closest('.post-card');
+        if (!postCard) return;
+
+        const postId = postCard.dataset.postId;
+        const postType = postCard.dataset.postType;
+
+        // Aquí deberías hacer una llamada a tu API o cargar los datos de la publicación
+        const postData = await fetchPostData(postId); // Simula la obtención de datos
+
+        if (!postData) {
+            console.error('No se encontraron datos para la publicación:', postId);
             return;
         }
 
-        // Serializa los datos (imágenes y descripciones) a JSON
-        const dataToShare = JSON.stringify(uploadedImagesData);
-        // Codifica el JSON a Base64 para que sea seguro en el URL
-        const encodedData = btoa(dataToShare);
-
-        // Construye el URL. window.location.origin es "http://tudominio.com"
-        // window.location.pathname es "/tu_carpeta/index.html" (o solo "/" si está en la raíz)
-        const shareableLink = `${window.location.origin}${window.location.pathname}?data=${encodedData}`;
-
-        // Copiar al portapapeles
-        navigator.clipboard.writeText(shareableLink).then(() => {
-            alert('¡Link copiado al portapapeles! Compártelo para la aprobación:\n' + shareableLink);
-        }).catch(err => {
-            console.error('Error al copiar el link: ', err);
-            alert('No se pudo copiar el link automáticamente. Cópialo manualmente:\n' + shareableLink);
-        });
+        switch (postType) {
+            case 'feed':
+                renderFeedPost(postData, postModal);
+                modalOverlay.classList.remove('hidden');
+                break;
+            case 'carousel':
+                renderCarouselPost(postData, postModal);
+                modalOverlay.classList.remove('hidden');
+                break;
+            case 'story':
+                renderStory(postData, storyReelViewer);
+                storyReelViewer.classList.remove('hidden');
+                break;
+            case 'reel':
+                renderReel(postData, storyReelViewer);
+                storyReelViewer.classList.remove('hidden');
+                break;
+            default:
+                console.warn('Tipo de publicación desconocido:', postType);
+        }
     });
 
-    // --- Lógica de Carga al Abrir el Link ---
+    // --- Funciones de Renderizado (Ejemplos simplificados) ---
 
-    // Carga las publicaciones si el URL tiene el parámetro 'data'
-    function loadPostsFromURL() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const encodedData = urlParams.get('data');
+    async function fetchPostData(id) {
+        // Simula una llamada a la API
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const data = {
+                    '123': { id: '123', type: 'feed', user: 'usuario_ejemplo', avatar: 'user.jpg', media: 'image1.jpg', caption: 'Mi primera publicación.', likes: 120, comments: ['Genial!', 'Me encanta.'] },
+                    '124': { id: '124', type: 'carousel', user: 'fotografo_x', avatar: 'user2.jpg', media: ['car1.jpg', 'car2.jpg', 'car3.jpg'], caption: 'Paisajes increíbles.', likes: 300, comments: ['Espectacular.', 'Quiero ir!'] },
+                    '125': { id: '125', type: 'story', user: 'viajero_aventura', avatar: 'user3.jpg', media: 'story_video.mp4', timeElapsed: '2h' },
+                    '126': { id: '126', type: 'reel', user: 'bailarin_pro', avatar: 'user4.jpg', media: 'reel_dance.mp4', audio: 'Canción Viral', likes: 5000, comments: ['wow!', 'increíble ritmo.'] }
+                };
+                resolve(data[id]);
+            }, 100);
+        });
+    }
 
-        if (encodedData) {
-            try {
-                // Decodifica de Base64 y luego parsea el JSON
-                const decodedData = atob(encodedData);
-                uploadedImagesData = JSON.parse(decodedData);
+    function renderFeedPost(post, container) {
+        container.innerHTML = `
+            <div class="post-header">
+                <img src="${post.avatar}" alt="${post.user}" class="user-avatar">
+                <span class="username">${post.user}</span>
+                <button class="follow-btn">Seguir</button>
+                <button class="close-btn" onclick="closeView()">&times;</button>
+            </div>
+            <div class="post-media">
+                <img src="${post.media}" alt="Post Media">
+            </div>
+            <div class="post-actions">
+                <i class="icon-heart"></i>
+                <i class="icon-comment"></i>
+                <i class="icon-share"></i>
+                <i class="icon-save"></i>
+            </div>
+            <div class="post-details">
+                <p class="likes">${post.likes} Me gusta</p>
+                <p class="caption"><strong>${post.user}</strong> ${post.caption}</p>
+                <div class="comments">
+                    ${post.comments.map(c => `<p><strong>Comentario</strong> ${c}</p>`).join('')}
+                </div>
+                <input type="text" placeholder="Añade un comentario...">
+            </div>
+        `;
+    }
 
-                // Muestra cada publicación
-                uploadedImagesData.forEach(item => displayPost(item.src, item.description));
+    function renderCarouselPost(post, container) {
+        let mediaHtml = post.media.map((src, index) => `<img src="${src}" class="carousel-item ${index === 0 ? 'active' : ''}" alt="Carousel Image ${index + 1}">`).join('');
+        let indicatorsHtml = post.media.map((_, index) => `<span class="indicator ${index === 0 ? 'active' : ''}"></span>`).join('');
 
-                // Configura el modo de "solo lectura"
-                document.body.classList.add('shared-mode');
-                headerTitle.textContent = 'Feed para Aprobación';
-                uploadButton.style.display = 'none'; // Oculta el botón de subir
-                generateLinkButton.style.display = 'none'; // Oculta el botón de generar link
+        container.innerHTML = `
+            <div class="post-header">
+                <img src="${post.avatar}" alt="${post.user}" class="user-avatar">
+                <span class="username">${post.user}</span>
+                <button class="follow-btn">Seguir</button>
+                <button class="close-btn" onclick="closeView()">&times;</button>
+            </div>
+            <div class="carousel-media-container">
+                <button class="carousel-nav prev">&lt;</button>
+                <div class="carousel-track">
+                    ${mediaHtml}
+                </div>
+                <button class="carousel-nav next">&gt;</button>
+                <div class="carousel-indicators">${indicatorsHtml}</div>
+            </div>
+            <div class="post-actions">
+                <i class="icon-heart"></i>
+                <i class="icon-comment"></i>
+                <i class="icon-share"></i>
+                <i class="icon-save"></i>
+            </div>
+            <div class="post-details">
+                <p class="likes">${post.likes} Me gusta</p>
+                <p class="caption"><strong>${post.user}</strong> ${post.caption}</p>
+                <div class="comments">
+                    ${post.comments.map(c => `<p><strong>Comentario</strong> ${c}</p>`).join('')}
+                </div>
+                <input type="text" placeholder="Añade un comentario...">
+            </div>
+        `;
 
-                // Deshabilita la edición de texto en modo compartido
-                document.querySelectorAll('.instagram-post p').forEach(p => {
-                    p.contentEditable = "false";
-                });
+        // Lógica de carrusel (requeriría más JS para funcionalidad de slides)
+        // Por ahora, solo es una estructura.
+    }
 
-            } catch (e) {
-                console.error('Error al decodificar o parsear datos del URL:', e);
-                alert('Hubo un problema al cargar el feed compartido. El enlace podría estar corrupto.');
-                // En caso de error, muestra los controles normales
-                document.body.classList.remove('shared-mode');
-            }
-        } else {
-            // Si no hay parámetro 'data', asegúrate de que los controles estén visibles
-            document.body.classList.remove('shared-mode');
+    function renderStory(post, container) {
+        container.innerHTML = `
+            <div class="story-content">
+                <video src="${post.media}" autoplay loop muted class="story-media"></video>
+                <div class="story-header">
+                    <div class="progress-bar-container">
+                        <div class="progress-segment active"></div>
+                        </div>
+                    <img src="${post.avatar}" alt="${post.user}" class="user-avatar">
+                    <span class="username">${post.user}</span>
+                    <span class="time-elapsed">${post.timeElapsed}</span>
+                    <button class="close-btn" onclick="closeView()">&times;</button>
+                </div>
+                <div class="story-actions">
+                    <input type="text" placeholder="Enviar mensaje...">
+                    <i class="icon-heart"></i>
+                    <i class="icon-emoji"></i>
+                </div>
+                <div class="story-nav-area left" onclick="prevStory()"></div>
+                <div class="story-nav-area right" onclick="nextStory()"></div>
+            </div>
+        `;
+        // Lógica para avanzar/retroceder historias y barra de progreso
+        const videoElement = container.querySelector('.story-media');
+        if (videoElement) {
+             videoElement.play(); // Asegurarse que se reproduce
         }
     }
 
-    // Ejecuta la carga de posts al inicio
-    loadPostsFromURL();
-
-    // Muestra el mensaje inicial si no hay posts y no se cargó desde un link
-    if (uploadedImagesData.length === 0 && !new URLSearchParams(window.location.search).get('data')) {
-        if (noPostsMessage) {
-            noPostsMessage.style.display = 'block';
+    function renderReel(post, container) {
+        container.innerHTML = `
+            <div class="reel-content">
+                <video src="${post.media}" autoplay loop muted class="reel-media"></video>
+                <div class="reel-overlay">
+                    <button class="close-btn" onclick="closeView()">&times;</button>
+                    <div class="reel-info-bottom-left">
+                        <p class="username-reel"><strong>${post.user}</strong></p>
+                        <p class="reel-caption">${post.caption || ''}</p>
+                        <p class="reel-audio"><i class="icon-music"></i> ${post.audio}</p>
+                    </div>
+                    <div class="reel-actions-right">
+                        <div class="action-item"><i class="icon-heart"></i><span>${post.likes}</span></div>
+                        <div class="action-item"><i class="icon-comment"></i><span>${post.comments.length}</span></div>
+                        <div class="action-item"><i class="icon-share"></i></div>
+                        <div class="action-item"><i class="icon-save"></i></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        const videoElement = container.querySelector('.reel-media');
+        if (videoElement) {
+             videoElement.play(); // Asegurarse que se reproduce
         }
     }
 });
