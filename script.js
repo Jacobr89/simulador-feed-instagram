@@ -19,30 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedMediaFiles = []; // Archivos seleccionados para la publicación
     let activeAccount = ''; // Cuenta de usuario activa
 
-    // --- Cuentas y Datos de Simulación ---
+    // --- Cuentas y Datos de Simulación (Guardados en localStorage) ---
     // Estructura de datos:
     // {
     //   'nombreUsuario1': {
     //     avatar: 'url_avatar',
-    //     stories: [{ type: 'video', url: '...', duration: 5 }, ...],
-    //     feed: [{ id: '...', type: 'feed', media: '...', caption: '...', ... }, ...]
+    //     stories: [{ id: 'storyId', type: 'image'|'video', url: '...', duration: N }, ...],
+    //     feed: [{ id: 'postId', type: 'feed'|'carousel'|'reel', media: '...', caption: '...', ... }, ...]
     //   },
     //   'nombreUsuario2': { ... }
     // }
-    let appData = JSON.parse(localStorage.getItem('insimuAppData')) || {
-        'mi_usuario_ejemplo': {
-            avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME',
-            stories: [
-                { id: 'story_init_1', type: 'video', url: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4', duration: 5 },
-                { id: 'story_init_2', type: 'image', url: 'https://via.placeholder.com/400x700/FFA07A/000000?text=Mi+historia', duration: 3 }
-            ],
-            feed: [
-                { id: 'post_init_1', type: 'feed', user: 'mi_usuario_ejemplo', avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME', media: 'https://via.placeholder.com/600x600/FFD700/000000?text=Mi+Primera+Publicacion', caption: '¡Hola, mundo! Esta es mi primera publicación en Insimu. #bienvenido', likes: 120, comments: [], time: '1h' },
-                { id: 'post_init_2', type: 'carousel', user: 'mi_usuario_ejemplo', avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME', media: ['https://via.placeholder.com/600x600/ADD8E6/000000?text=Carrusel+1', 'https://via.placeholder.com/600x600/B0E0E6/000000?text=Carrusel+2'], caption: 'Un pequeño carrusel de mis momentos favoritos. #recuerdos', likes: 80, comments: [], time: '3h' },
-                { id: 'post_init_3', type: 'reel', user: 'mi_usuario_ejemplo', avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME', media: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4', caption: 'Mi primer reel, ¡probando nuevos bailes! #reel #dance', audio: 'Música Viral', likes: 300, comments: [], time: '5h' }
-            ]
-        }
-    };
+    let appData = JSON.parse(localStorage.getItem('insimuAppData')) || {};
 
     // Función para guardar los datos en localStorage
     const saveAppData = () => {
@@ -53,15 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadAccounts = () => {
         accountSelector.innerHTML = '';
         const usernames = Object.keys(appData);
+
         if (usernames.length === 0) {
             // Si no hay cuentas, crea una por defecto
-            appData['usuario_demo'] = {
-                avatar: 'https://via.placeholder.com/32x32/CCCCCC/000000?text=UD',
-                stories: [],
-                feed: []
+            const defaultUsername = 'mi_usuario_ejemplo';
+            appData[defaultUsername] = {
+                avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME',
+                stories: [
+                    { id: 'story_init_1', type: 'video', url: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4', duration: 5 },
+                    { id: 'story_init_2', type: 'image', url: 'https://via.placeholder.com/400x700/FFA07A/000000?text=Mi+historia', duration: 3 }
+                ],
+                feed: [
+                    { id: 'post_init_1', type: 'feed', user: defaultUsername, avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME', media: 'https://via.placeholder.com/600x600/FFD700/000000?text=Mi+Primera+Publicacion', caption: '¡Hola, mundo! Esta es mi primera publicación en Insimu. #bienvenido', likes: 120, comments: [], time: '1h' },
+                    { id: 'post_init_2', type: 'carousel', user: defaultUsername, avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME', media: ['https://via.placeholder.com/600x600/ADD8E6/000000?text=Carrusel+1', 'https://via.placeholder.com/600x600/B0E0E6/000000?text=Carrusel+2'], caption: 'Un pequeño carrusel de mis momentos favoritos. #recuerdos', likes: 80, comments: [], time: '3h' },
+                    { id: 'post_init_3', type: 'reel', user: defaultUsername, avatar: 'https://via.placeholder.com/32x32/FFC0CB/000000?text=ME', media: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4', caption: 'Mi primer reel, ¡probando nuevos bailes! #reel #dance', audio: 'Música Viral', likes: 300, comments: [], time: '5h' }
+                ]
             };
             saveAppData();
-            usernames.push('usuario_demo');
+            usernames.push(defaultUsername);
         }
 
         usernames.forEach(username => {
@@ -118,6 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
             activeMedia.pause();
             activeMedia.currentTime = 0;
         }
+        // Limpiar todas las Blob URLs creadas para evitar fugas de memoria
+        selectedMediaFiles.forEach(file => {
+            if (file.objectURL) {
+                URL.revokeObjectURL(file.objectURL);
+                delete file.objectURL; // Eliminar la propiedad para no revocar dos veces
+            }
+        });
+        selectedMediaFiles = []; // Asegurarse de que el array esté vacío
     };
     window.closeView = closeView; // Hacer global para HTML
 
@@ -125,12 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
         createPostOverlay.classList.remove('hidden');
         // Resetear el modal al abrirlo
         currentMediaType = 'feed';
-        postTypeSelector.querySelector('.type-btn.active').classList.remove('active');
+        postTypeSelector.querySelector('.type-btn.active')?.classList.remove('active'); // Usar ?. para evitar error si no hay active
         postTypeSelector.querySelector('[data-type="feed"]').classList.add('active');
         mediaInput.value = '';
         selectedMediaFiles = [];
         mediaPreviewContainer.innerHTML = '';
         postCaptionInput.value = '';
+        mediaInput.accept = 'image/*,video/*'; // Restablecer a aceptar ambos y múltiples
+        mediaInput.setAttribute('multiple', '');
     };
 
     const closeCreatePostModal = () => {
@@ -151,20 +157,27 @@ document.addEventListener('DOMContentLoaded', () => {
             mediaInput.value = '';
             selectedMediaFiles = [];
             mediaPreviewContainer.innerHTML = '';
-            // Restringir tipo de archivo para historias/reels (solo 1 video)
+            // Restringir tipo de archivo para historias/reels (solo 1 video/imagen)
             if (currentMediaType === 'story' || currentMediaType === 'reel') {
                 mediaInput.accept = 'image/*,video/*';
-                mediaInput.removeAttribute('multiple');
+                mediaInput.removeAttribute('multiple'); // Solo un archivo
             } else {
                 mediaInput.accept = 'image/*,video/*';
-                mediaInput.setAttribute('multiple', '');
+                mediaInput.setAttribute('multiple', ''); // Múltiples archivos
             }
         }
     });
 
     mediaInput.addEventListener('change', (e) => {
         const files = Array.from(e.target.files);
-        selectedMediaFiles = []; // Reiniciar para nuevas selecciones
+        
+        // Limpiar cualquier Blob URL de selecciones anteriores antes de procesar las nuevas
+        selectedMediaFiles.forEach(file => {
+            if (file.objectURL) {
+                URL.revokeObjectURL(file.objectURL);
+            }
+        });
+        selectedMediaFiles = [];
 
         // Lógica para limitar a un solo archivo para historias/reels
         if ((currentMediaType === 'story' || currentMediaType === 'reel') && files.length > 1) {
@@ -175,39 +188,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         mediaPreviewContainer.innerHTML = ''; // Limpiar previsualizaciones anteriores
         files.forEach(file => {
-            selectedMediaFiles.push(file); // Guardar el archivo real
+            const objectURL = URL.createObjectURL(file);
+            // Guardar el archivo junto con su URL para revocarla luego
+            const fileWithURL = { ...file, objectURL: objectURL };
+            selectedMediaFiles.push(fileWithURL);
 
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'media-preview-item';
-                let mediaElement;
-                if (file.type.startsWith('image/')) {
-                    mediaElement = document.createElement('img');
-                } else if (file.type.startsWith('video/')) {
-                    mediaElement = document.createElement('video');
-                    mediaElement.muted = true; // Silenciar previsualización
-                    mediaElement.autoplay = true; // Autoplay en previsualización
-                    mediaElement.loop = true;
+            const previewItem = document.createElement('div');
+            previewItem.className = 'media-preview-item';
+            let mediaElement;
+            if (file.type.startsWith('image/')) {
+                mediaElement = document.createElement('img');
+            } else if (file.type.startsWith('video/')) {
+                mediaElement = document.createElement('video');
+                mediaElement.muted = true; // Silenciar previsualización
+                mediaElement.autoplay = true; // Autoplay en previsualización
+                mediaElement.loop = true;
+                mediaElement.playsinline = true; // Importante para iOS
+            }
+            mediaElement.src = objectURL;
+            previewItem.appendChild(mediaElement);
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-media-btn';
+            removeBtn.innerHTML = '&times;';
+            removeBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evitar que el clic en el botón active el label
+                selectedMediaFiles = selectedMediaFiles.filter(f => f !== fileWithURL);
+                if (fileWithURL.objectURL) URL.revokeObjectURL(fileWithURL.objectURL); // Revocar la URL al eliminar
+                previewItem.remove();
+                if (selectedMediaFiles.length === 0) {
+                    mediaInput.value = ''; // Resetear input si no hay archivos
                 }
-                mediaElement.src = event.target.result;
-                previewItem.appendChild(mediaElement);
-
-                const removeBtn = document.createElement('button');
-                removeBtn.className = 'remove-media-btn';
-                removeBtn.innerHTML = '&times;';
-                removeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Evitar que el clic en el botón active el label
-                    selectedMediaFiles = selectedMediaFiles.filter(f => f !== file);
-                    previewItem.remove();
-                    if (selectedMediaFiles.length === 0) {
-                        mediaInput.value = ''; // Resetear input si no hay archivos
-                    }
-                });
-                previewItem.appendChild(removeBtn);
-                mediaPreviewContainer.appendChild(previewItem);
-            };
-            reader.readAsDataURL(file);
+            });
+            previewItem.appendChild(removeBtn);
+            mediaPreviewContainer.appendChild(previewItem);
         });
     });
 
@@ -219,14 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (currentMediaType === 'story' || currentMediaType === 'reel') {
-            if (!selectedMediaFiles[0].type.startsWith('video/')) {
-                 alert('Para Historias y Reels, por favor sube un video.');
-                 return;
-            }
-        }
-
-
         const newPost = {
             id: 'post_' + Date.now(), // ID único
             user: activeAccount,
@@ -237,8 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
             time: 'justo ahora'
         };
 
-        // Convertir archivos a URL Blob para simular URLs de medios persistentes
-        const mediaUrls = selectedMediaFiles.map(file => URL.createObjectURL(file));
+        // Utiliza las Blob URLs directamente de selectedMediaFiles
+        const mediaUrls = selectedMediaFiles.map(file => file.objectURL);
 
         if (currentMediaType === 'feed') {
             newPost.type = 'feed';
@@ -251,12 +257,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (currentMediaType === 'story') {
             newPost.type = 'story';
             // Para historias, necesitamos un formato de array de objetos con tipo y URL
-            newPost.stories = mediaUrls.map(url => ({
+            newPost.stories = mediaUrls.map((url, index) => ({
                 id: 'story_item_' + Date.now() + Math.random().toString(36).substr(2, 5),
-                type: selectedMediaFiles[0].type.startsWith('image/') ? 'image' : 'video',
+                type: selectedMediaFiles[index].type.startsWith('image/') ? 'image' : 'video',
                 url: url,
-                duration: selectedMediaFiles[0].type.startsWith('video/') ? 10 : 5 // Duración predeterminada para simulación
+                duration: selectedMediaFiles[index].type.startsWith('video/') ? 10 : 5 // Duración predeterminada para simulación
             }));
+            // Las historias se manejan como un array directo en el usuario
             appData[activeAccount].stories.unshift(newPost.stories[0]); // Añadir la primera historia al array de historias del usuario
         } else if (currentMediaType === 'reel') {
             newPost.type = 'reel';
@@ -321,12 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Aquí podrías añadir historias de otros usuarios simulados si los tuvieras en `appData`
     };
 
-    // --- Renderizado de Modales de Previsualización (con ligeras mejoras) ---
-
-    // Las funciones `renderFeedPost`, `renderCarouselPost`, `renderStory`, `renderReel`
-    // se mantienen muy similares a la versión anterior, con el `container.className`
-    // ajustado para aplicar los estilos correctos de cada vista.
-    // Asegúrate de que las URLs de medios sean `Blob URLs` si estás usando `URL.createObjectURL`.
+    // --- Renderizado de Modales de Previsualización ---
 
     // Renderizado de publicación de Feed
     function renderFeedPost(post, container) {
@@ -367,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Renderizado de publicación de Carrusel
     function renderCarouselPost(post, container) {
         container.className = 'modal-content carousel-post-view';
-        let mediaHtml = post.media.map((src, index) => `<img src="${src}" class="carousel-item ${index === 0 ? 'active' : ''}" alt="Carrusel Imagen ${index + 1}">`).join('');
+        let mediaHtml = post.media.map((src, index) => `<img src="${src}" class="carousel-item" alt="Carrusel Imagen ${index + 1}">`).join('');
         let indicatorsHtml = post.media.map((_, index) => `<span class="indicator ${index === 0 ? 'active' : ''}"></span>`).join('');
 
         container.innerHTML = `
@@ -414,6 +416,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const indicators = container.querySelectorAll('.carousel-indicators .indicator');
         let currentIndex = 0;
 
+        // Establecer la primera imagen como activa
+        if (items.length > 0) {
+            items[0].classList.add('active');
+        }
+
         const updateCarousel = () => {
             track.style.transform = `translateX(-${currentIndex * 100}%)`;
             indicators.forEach((ind, i) => {
@@ -436,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateCarousel();
             }
         });
-        updateCarousel();
+        updateCarousel(); // Inicializar vista
     }
 
     // Renderizado de Historia
@@ -454,44 +461,47 @@ document.addEventListener('DOMContentLoaded', () => {
         let storyInterval;
 
         const startStoryTimer = () => {
-            clearInterval(storyInterval);
+            clearInterval(storyInterval); // Limpiar cualquier intervalo anterior
             const currentStoryItem = storiesToRender[currentStoryIndex];
-            // Asegurarse de que el elemento media existe antes de intentar reproducir
+            const duration = (currentStoryItem.duration || (currentStoryItem.type === 'video' ? 10 : 5)) * 1000; // Duración en milisegundos
+
+            // Seleccionar el elemento media (video o imagen)
             const mediaElement = container.querySelector('.story-reel-media');
+
+            // Asegurarse de que el video se reproduce si es el caso
             if (mediaElement && currentStoryItem.type === 'video') {
-                mediaElement.play().catch(e => console.error("Error al reproducir video:", e));
+                mediaElement.play().catch(e => console.error("Error al reproducir video de historia:", e));
             }
 
-            const duration = (currentStoryItem.duration || (currentStoryItem.type === 'video' ? 15 : 5)) * 1000;
-
             const progressBarSegments = container.querySelectorAll('.progress-segment');
+            // Resetear progreso para la historia actual antes de animar
             progressBarSegments.forEach((seg, i) => {
                 seg.style.transition = 'none'; // Eliminar transición para resetear
-                if (i < currentStoryIndex) {
+                if (i < currentStoryIndex) { // Historias ya vistas
                     seg.style.width = '100%';
                     seg.style.backgroundColor = '#fff';
-                } else if (i === currentStoryIndex) {
+                } else if (i === currentStoryIndex) { // Historia actual
                     seg.style.width = '0%';
                     seg.style.backgroundColor = 'rgba(255,255,255,0.4)';
-                } else {
+                } else { // Historias pendientes
                     seg.style.width = '0%';
                     seg.style.backgroundColor = 'rgba(255,255,255,0.4)';
                 }
             });
 
-            setTimeout(() => { // Pequeño retraso para que el "transition: none" surta efecto
+            // Pequeño retraso para que el "transition: none" surta efecto antes de añadir la nueva transición
+            setTimeout(() => {
                 if (progressBarSegments[currentStoryIndex]) {
-                    progressBarSegments[currentStoryIndex].style.transition = `width ${duration / 1000}s linear`;
-                    progressBarSegments[currentStoryIndex].style.width = '100%';
-                    progressBarSegments[currentStoryIndex].style.backgroundColor = '#fff';
+                     progressBarSegments[currentStoryIndex].style.transition = `width ${duration / 1000}s linear`;
+                     progressBarSegments[currentStoryIndex].style.width = '100%';
+                     progressBarSegments[currentStoryIndex].style.backgroundColor = '#fff';
                 }
-            }, 50); // Mínimo retraso
+            }, 50); // Un pequeño retraso para permitir que el DOM se actualice
 
             storyInterval = setTimeout(() => {
                 nextStory();
             }, duration);
         };
-
 
         const renderCurrentStory = () => {
             if (currentStoryIndex >= storiesToRender.length) {
@@ -589,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Delegación de eventos para la previsualización ---
+    // --- Delegación de eventos para la previsualización de publicaciones ---
     // Este manejador de eventos principal se asegura de que cuando hagas clic en una publicación
     // en el feed o una historia, se abra el modal de previsualización correcto.
     document.body.addEventListener('click', async (e) => {
@@ -606,31 +616,27 @@ document.addEventListener('DOMContentLoaded', () => {
         let postData;
 
         if (postType === 'story' && postId === 'your-story-id') {
-            // Clic en "Tu Historia"
+            // Clic en "Tu Historia" - usamos los datos de las historias del usuario activo
             postData = { id: 'your-story-id', user: activeAccount, stories: appData[activeAccount].stories };
         } else {
             // Buscar la publicación en el feed de la cuenta activa
             postData = appData[activeAccount].feed.find(p => p.id === postId);
-            // Si no es del feed (ej. si implementas historias de otros usuarios), buscar en historias
-            if (!postData && postType === 'story') {
-                // Aquí deberías tener una lógica para buscar historias de otros usuarios
-                // Por ahora, solo simulará si es "tu historia"
-                postData = { id: postId, user: 'OtroUsuario', stories: [{ type: 'image', url: 'https://via.placeholder.com/400x700/808080/FFFFFF?text=Historia+de+Otro', duration: 5 }] };
-            }
+            // Si en el futuro agregas historias de otros usuarios al feed, deberías buscarlas también aquí.
         }
 
         if (!postData) {
             console.error('No se encontraron datos para la publicación:', postId, postType);
+            // Si no se encuentra la publicación, no abrimos ningún modal
             return;
         }
 
         switch (postType) {
             case 'feed':
+                renderFeedPost(postData, postModal);
+                modalOverlay.classList.remove('hidden');
+                break;
             case 'carousel':
-                renderFeedPost(postData, postModal); // Usa renderFeedPost para ambos si tienen la misma estructura de modal
-                if (postType === 'carousel') {
-                    renderCarouselPost(postData, postModal); // Sobrescribe para la lógica del carrusel
-                }
+                renderCarouselPost(postData, postModal);
                 modalOverlay.classList.remove('hidden');
                 break;
             case 'story':
