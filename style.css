@@ -1,22 +1,34 @@
+/* Estilos Globales y Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin: 0;
-    background-color: #fafafa; /* Fondo claro de Instagram */
-    color: #262626;
     display: flex;
     justify-content: center;
+    align-items: flex-start; /* Alinear arriba para que el app-container no esté centrado verticalmente */
     min-height: 100vh;
+    background-color: #f0f2f5; /* Fondo más claro para la app */
+    font-size: 14px; /* Tamaño de fuente por defecto */
+    color: #262626;
 }
 
 #app-container {
+    display: flex;
+    flex-direction: column; /* La cabecera arriba, luego el main-layout */
     width: 100%;
-    max-width: 935px; /* Ancho típico del feed de Instagram en escritorio */
+    max-width: 1200px; /* Ancho máximo para la aplicación Planoly-like */
+    min-height: 100vh;
     background-color: #fff;
-    border: none; /* Sin borde por defecto, se añade en media query para escritorio */
-    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; /* Bordes redondeados para la app */
+    overflow: hidden; /* Asegurar que no se desborde el contenido */
 }
 
-/* --- ESTILOS DE LA CABECERA --- */
+/* Header */
 .app-header {
     display: flex;
     justify-content: space-between;
@@ -24,39 +36,27 @@ body {
     padding: 10px 20px;
     border-bottom: 1px solid #dbdbdb;
     background-color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sutil sombra */
+    z-index: 100; /* Asegurar que esté por encima */
 }
 
-.header-left .instagram-logo {
-    height: 30px; /* Tamaño del logo de Instagram */
-    object-fit: contain;
-}
-
-.header-center {
+.app-header .header-left {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.account-selector {
-    padding: 8px 10px;
-    border: 1px solid #dbdbdb;
-    border-radius: 5px;
-    font-size: 1em;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    appearance: none; /* Elimina estilos por defecto del select */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.4L146.2%20208.6%205.4%2069.4h281.6z%22%2F%3E%3C%2Fsvg%3E'); /* Flecha hacia abajo para el select */
-    background-repeat: no-repeat;
-    background-position: right 8px top 50%;
-    background-size: 12px auto;
-    padding-right: 25px; /* Espacio para el icono */
+.app-header .instagram-logo {
+    height: 30px;
+    object-fit: contain;
 }
 
-.add-account-btn, .new-post-btn, .header-icon {
+.app-header .app-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #262626;
+}
+
+.app-header .header-icon { /* Reutilizamos esta clase para el botón de añadir medios */
     background: none;
     border: none;
     font-size: 24px;
@@ -65,611 +65,313 @@ body {
     padding: 5px;
     transition: transform 0.2s ease;
 }
-.add-account-btn:hover, .new-post-btn:hover, .header-icon:hover {
+.app-header .header-icon:hover {
     transform: scale(1.1);
 }
 
-/* --- SECCIÓN DE HISTORIAS --- */
-#main-content {
-    padding-top: 0; /* No padding superior, ya que las historias están pegadas a la cabecera */
-}
-
-.stories-section {
+/* Layout Principal (Sidebar + Content) */
+.main-layout {
     display: flex;
-    overflow-x: auto; /* Permite desplazamiento horizontal */
-    padding: 10px 0;
-    border-bottom: 1px solid #dbdbdb;
-    white-space: nowrap; /* Evita que los elementos salten de línea */
-    -webkit-overflow-scrolling: touch; /* Suaviza el scroll en iOS */
-    scrollbar-width: none; /* Oculta la barra de scroll en Firefox */
-    -ms-overflow-style: none;  /* Oculta la barra de scroll en IE/Edge */
+    flex-grow: 1; /* Para que ocupe el espacio restante */
 }
 
-.stories-section::-webkit-scrollbar {
-    display: none; /* Oculta la barra de scroll en WebKit */
-}
-
-.story-card {
-    flex: 0 0 auto; /* No permite que las tarjetas se redimensionen */
-    width: 90px; /* Ancho fijo para cada historia */
-    margin: 0 8px; /* Espacio entre historias */
+/* Sidebar */
+#sidebar {
+    width: 250px;
+    min-width: 200px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dbdbdb;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding-bottom: 0;
-    height: auto;
-    background: none;
-    cursor: pointer;
+    justify-content: space-between; /* Empujar el selector de cuenta al final */
 }
 
-.story-card .story-avatar-wrapper {
-    width: 66px; /* Tamaño del círculo externo de la historia */
-    height: 66px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar li {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    color: #555;
+    cursor: pointer;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 5px;
-    padding: 2px; /* Espacio para el borde de la historia */
+    gap: 15px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.story-card img {
-    width: 60px; /* Tamaño real del avatar dentro del borde */
-    height: 60px;
-    border-radius: 50%;
-    border: 2px solid #fff; /* Borde blanco dentro del gradiente */
-    object-fit: cover;
-    position: static; /* Anula el absoluto del .post-card img */
+#sidebar li:hover {
+    background-color: #e9ecef;
+    color: #000;
 }
 
-.story-card span {
-    font-size: 0.75em;
-    color: #262626;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
+#sidebar li.active {
+    background-color: #e0e7ff; /* Color de selección */
+    color: #007bff; /* Color de texto para activo */
+    font-weight: 600;
+    border-left: 4px solid #007bff; /* Indicador visual de activo */
+    padding-left: 16px; /* Ajuste para el borde */
 }
 
-/* --- SECCIÓN PRINCIPAL DEL FEED --- */
-.feed-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3px; /* Pequeño espacio entre publicaciones */
-    padding: 3px;
-    max-width: 935px; /* Mismo ancho que el contenedor principal en escritorio */
-    margin: 0 auto; /* Centrar la cuadrícula */
+#sidebar .sidebar-bottom {
+    padding: 20px;
+    border-top: 1px solid #dbdbdb;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.post-card {
-    position: relative;
+#sidebar .account-selector {
     width: 100%;
-    padding-bottom: 100%; /* Truco para hacer las celdas cuadradas */
-    background-color: #eee;
-    overflow: hidden;
+    padding: 8px 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #fff;
     cursor: pointer;
-    transition: transform 0.1s ease-in-out, opacity 0.3s ease-in-out;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.4L146.2%20208.6%205.4%2069.4h281.6z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 12px auto;
+    padding-right: 25px;
 }
 
-.post-card:hover {
-    transform: scale(1.01);
-    opacity: 0.9; /* Efecto sutil al pasar el ratón */
-}
-
-.post-card img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Recorta la imagen para llenar el espacio */
-}
-
-/* Indicadores para Carrusel y Reel en la vista de feed */
-.carousel-indicator-icon,
-.reel-indicator-icon {
-    position: absolute;
-    top: 8px;
-    right: 8px;
+#sidebar .add-account-btn {
+    background-color: #007bff;
     color: white;
-    font-size: 20px;
-    text-shadow: 0px 0px 5px rgba(0,0,0,0.5);
-    z-index: 2;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+#sidebar .add-account-btn:hover {
+    background-color: #0056b3;
 }
 
-.no-posts {
-    grid-column: 1 / -1; /* Ocupa todas las columnas */
-    text-align: center;
-    padding: 50px 20px;
-    color: #8e8e8e;
-    font-style: italic;
+
+/* Main Content Area */
+#main-content-area {
+    flex-grow: 1; /* Ocupa todo el espacio restante */
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto; /* Scroll si el contenido es largo */
 }
 
+.main-view h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
 
-/* --- MODALES Y VISTAS DE PANTALLA COMPLETA (existentes) --- */
+/* Clases de utilidad */
 .hidden {
     display: none !important;
 }
 
-#modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.65); /* Fondo semi-transparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-#modal-overlay:not(.hidden) {
-    opacity: 1;
-}
-
-.modal-content {
-    background-color: #fff;
-    border-radius: 8px;
-    display: flex;
-    max-width: 950px; /* Ancho típico de las publicaciones en modal */
-    max-height: 90vh;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    transform: scale(0.9);
-    transition: transform 0.3s ease-in-out;
-}
-
-#modal-overlay:not(.hidden) .modal-content {
-    transform: scale(1);
-}
-
-.modal-content .close-btn {
-    position: absolute;
-    top: 15px;
-    right: -40px; /* Fuera del modal, al lado */
-    background: none;
-    border: none;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-    z-index: 1001;
-    text-shadow: 0px 0px 5px rgba(0,0,0,0.8);
-    transition: transform 0.2s ease-in-out;
-}
-
-.modal-content .close-btn:hover {
-    transform: rotate(90deg);
-}
-
-
-/* Diseño para publicaciones de Feed dentro del modal */
-.modal-content.feed-post-view {
-    flex-direction: row; /* Imagen a la izquierda, info a la derecha */
-    width: 950px; /* Ancho fijo para ejemplo */
-    height: 600px; /* Alto fijo para ejemplo */
-}
-
-.modal-content.feed-post-view .media-section {
-    flex: 2; /* Ocupa más espacio */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #000; /* Fondo para la imagen/video */
-}
-
-.modal-content.feed-post-view .media-section img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Ajusta la imagen sin recortar */
-}
-
-.modal-content.feed-post-view .info-section {
-    flex: 1; /* Ocupa menos espacio */
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid #efefef;
-    background-color: #fff;
-}
-
-.modal-content.feed-post-view .post-header {
-    display: flex;
-    align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid #efefef;
-}
-
-.modal-content.feed-post-view .post-header .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 12px;
-}
-
-.modal-content.feed-post-view .post-header .username {
-    font-weight: 600;
-    flex-grow: 1;
-}
-
-.modal-content.feed-post-view .follow-btn {
-    background-color: #0095f6;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 10px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 0.85em;
-}
-
-.modal-content.feed-post-view .comments-section {
-    flex-grow: 1;
-    padding: 16px;
-    overflow-y: auto; /* Scroll para comentarios */
-    font-size: 0.875em;
-}
-
-.modal-content.feed-post-view .comments-section .caption-text {
-    margin-bottom: 10px;
-}
-
-.modal-content.feed-post-view .comments-section p {
-    margin-bottom: 8px;
-    line-height: 1.4;
-}
-
-.modal-content.feed-post-view .post-actions-footer {
-    padding: 6px 16px;
-    border-top: 1px solid #efefef;
-}
-
-.modal-content.feed-post-view .action-icons {
-    display: flex;
-    gap: 16px;
-    font-size: 24px;
-    padding: 8px 0;
-}
-
-.modal-content.feed-post-view .action-icons i {
-    cursor: pointer;
-}
-
-.modal-content.feed-post-view .likes-count {
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.modal-content.feed-post-view .time-ago {
-    font-size: 0.75em;
-    color: #8e8e8e;
-    margin-bottom: 10px;
-}
-
-.modal-content.feed-post-view .comment-input-section {
-    border-top: 1px solid #efefef;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-}
-
-.modal-content.feed-post-view .comment-input-section input {
-    flex-grow: 1;
-    border: none;
-    padding: 8px 0;
-    font-size: 0.9em;
-}
-
-.modal-content.feed-post-view .comment-input-section input:focus {
-    outline: none;
-}
-
-.modal-content.feed-post-view .comment-input-section button {
-    background: none;
-    border: none;
-    color: #0095f6;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-/* Diseño para Carrusel dentro del modal */
-.modal-content.carousel-post-view .carousel-media-container {
-    position: relative;
-    width: 600px; /* Ancho fijo para ejemplo */
-    height: 600px; /* Alto fijo para ejemplo */
-    background-color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.modal-content.carousel-post-view .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 100%;
-    height: 100%;
-}
-
-.modal-content.carousel-post-view .carousel-item {
-    min-width: 100%; /* Cada imagen ocupa el 100% del contenedor */
-    height: 100%;
-    object-fit: contain;
-}
-
-.modal-content.carousel-post-view .carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 24px;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content.carousel-post-view .carousel-nav.prev {
-    left: 10px;
-}
-.modal-content.carousel-post-view .carousel-nav.next {
-    right: 10px;
-}
-
-.modal-content.carousel-post-view .carousel-indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 5px;
-    z-index: 10;
-}
-
-.modal-content.carousel-post-view .carousel-indicators .indicator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: rgba(255,255,255,0.5);
-}
-
-.modal-content.carousel-post-view .carousel-indicators .indicator.active {
-    background-color: #fff;
-}
-
-/* --- VISOR DE HISTORIAS Y REELS (Pantalla Completa) --- */
-#story-reel-viewer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000; /* Mayor que el modal normal */
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-#story-reel-viewer:not(.hidden) {
-    opacity: 1;
-}
-
-.story-reel-content {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    max-width: 400px; /* Ancho típico para historias/reels en móvil */
-    max-height: 100vh; /* Para pantallas de escritorio */
-}
-
-.story-reel-media {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Ajusta el contenido sin recortar */
-    background-color: black;
-}
-
-.story-reel-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    z-index: 10;
-}
-
-.story-reel-overlay .top-bar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.story-reel-overlay .progress-bar-container {
-    flex-grow: 1;
-    display: flex;
-    gap: 3px;
-    margin-right: 10px;
-}
-
-.story-reel-overlay .progress-segment {
-    flex-grow: 1;
-    height: 3px;
-    background-color: rgba(255,255,255,0.4);
-    border-radius: 2px;
-}
-
-.story-reel-overlay .progress-segment.active {
-    background-color: #fff;
-}
-
-.story-reel-overlay .user-info {
-    display: flex;
-    align-items: center;
-    margin-right: auto; /* Empuja el botón cerrar a la derecha */
-}
-
-.story-reel-overlay .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 8px;
-    border: 1px solid rgba(255,255,255,0.5);
-}
-
-.story-reel-overlay .username {
-    font-weight: 600;
-    margin-right: 8px;
-}
-
-.story-reel-overlay .time-elapsed {
-    font-size: 0.9em;
-    color: rgba(255,255,255,0.8);
-}
-
-.story-reel-overlay .close-btn {
-    background: none;
-    border: none;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.story-reel-overlay .bottom-bar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.story-reel-overlay .message-input {
-    flex-grow: 1;
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 25px;
-    padding: 10px 15px;
-    color: white;
-    font-size: 0.95em;
-    margin-right: 10px;
-}
-
-.story-reel-overlay .message-input::placeholder {
-    color: rgba(255,255,255,0.7);
-}
-
-.story-reel-overlay .message-input:focus {
-    outline: none;
-    border-color: white;
-}
-
-.story-reel-overlay .action-icon {
-    font-size: 26px;
-    margin-left: 15px;
-    cursor: pointer;
-}
-
-/* Acciones para Reels (verticales a la derecha) */
-.reel-actions-vertical {
-    position: absolute;
-    right: 15px;
-    bottom: 80px; /* Sobre la barra de mensaje */
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    color: white;
+.empty-state {
     text-align: center;
-    font-size: 14px;
-    z-index: 10;
+    color: #888;
+    margin-top: 50px;
+    font-size: 1.1em;
 }
 
-.reel-actions-vertical .action-item {
+/* --- CALENDARIO --- */
+#calendar-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#calendar-controls button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #555;
+    cursor: pointer;
+}
+
+#current-month-year {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #333;
+}
+
+.calendar-grid-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.calendar-header span {
+    text-align: center;
+    padding: 10px 0;
+    font-weight: 600;
+    color: #777;
+    font-size: 0.9em;
+}
+
+.calendar-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    /* Puedes ajustar el alto mínimo de las filas aquí si es necesario */
+}
+
+.calendar-day {
+    min-height: 120px; /* Alto mínimo para cada día */
+    border: 1px solid #eee;
+    border-top: none;
+    border-left: none;
+    padding: 5px;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
+    gap: 5px;
+    overflow: hidden; /* Para ocultar publicaciones que se desborden */
+    background-color: #fff;
+    transition: background-color 0.2s ease;
 }
 
-.reel-actions-vertical .action-item i {
-    font-size: 28px;
-    margin-bottom: 5px;
+.calendar-day:nth-child(7n) { /* Último día de la semana */
+    border-right: none;
+}
+.calendar-day:nth-last-child(-n+7) { /* Última fila de días */
+    border-bottom: none;
 }
 
-/* Info del reel abajo a la izquierda */
-.reel-info-bottom-left {
-    position: absolute;
-    bottom: 80px; /* Sobre la barra de mensaje */
-    left: 15px;
-    color: white;
-    z-index: 10;
+
+.calendar-day.inactive-month {
+    background-color: #fafafa;
+    color: #ccc;
 }
 
-.reel-info-bottom-left p {
-    margin: 0;
+.calendar-day.current-day {
+    background-color: #e6f7ff; /* Resaltar el día actual */
+    border: 1px solid #91d5ff;
 }
 
-.reel-info-bottom-left .username-reel {
+.calendar-day.drag-over { /* Estilo visual al arrastrar sobre un día */
+    background-color: #d1e7ff;
+    border-color: #007bff;
+}
+
+.calendar-day-number {
     font-weight: 600;
-    margin-bottom: 5px;
+    font-size: 1.1em;
+    color: #333;
+    align-self: flex-start; /* Alinear el número a la izquierda arriba */
+    padding: 5px 5px 0 5px;
 }
 
-.reel-info-bottom-left .reel-caption {
-    font-size: 0.9em;
-    margin-bottom: 5px;
+.calendar-day.inactive-month .calendar-day-number {
+    color: #ccc;
 }
 
-.reel-info-bottom-left .reel-audio {
-    font-size: 0.85em;
+.calendar-post-thumbnail {
+    width: 80px; /* Tamaño de las miniaturas en el calendario */
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    position: relative;
+    z-index: 1; /* Asegurar que estén sobre el fondo del día */
+}
+
+.calendar-post-thumbnail.scheduled {
+    border: 2px solid #007bff; /* Borde azul para programadas */
+}
+.calendar-post-thumbnail.posted {
+    border: 2px solid #28a745; /* Borde verde para publicadas */
+}
+.calendar-post-thumbnail.draft {
+    border: 2px solid #ffc107; /* Borde amarillo para borradores */
+}
+
+/* Indicadores de tipo en las miniaturas del calendario */
+.calendar-post-thumbnail .post-type-icon {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    color: white;
+    background-color: rgba(0,0,0,0.6);
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-size: 0.7em;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.reel-info-bottom-left .reel-audio i {
-    margin-right: 5px;
+/* --- BIBLIOTECA DE MEDIOS --- */
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 10px;
 }
 
-/* Áreas de navegación para historias (clic a los lados) */
-.story-nav-area {
-    position: absolute;
-    top: 0;
-    width: 40%;
+.media-item {
+    width: 100%;
+    height: 150px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: grab; /* Cursor de arrastre */
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.media-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.media-item img, .media-item video {
+    width: 100%;
     height: 100%;
-    z-index: 15; /* Sobre el contenido, bajo el overlay */
-    cursor: pointer;
+    object-fit: cover;
 }
 
-.story-nav-area.left {
-    left: 0;
+.media-item .media-type-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.story-nav-area.right {
-    right: 0;
-}
-
-
-/* --- MODAL PARA CREAR PUBLICACIÓN --- */
-#create-post-overlay {
+/* --- MODAL PARA SUBIR MEDIOS (anteriormente create-post-overlay) --- */
+#upload-media-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -679,16 +381,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 3000; /* Mayor que otros modales */
+    z-index: 3000;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
 
-#create-post-overlay:not(.hidden) {
+#upload-media-overlay:not(.hidden) {
     opacity: 1;
 }
 
-.create-post-modal {
+.upload-media-modal {
     background-color: #fff;
     border-radius: 12px;
     width: 90%;
@@ -698,14 +400,14 @@ body {
     transition: transform 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
-    max-height: 90vh; /* Para que no se desborde en pantallas pequeñas */
+    max-height: 90vh;
 }
 
-#create-post-overlay:not(.hidden) .create-post-modal {
+#upload-media-overlay:not(.hidden) .upload-media-modal {
     transform: scale(1);
 }
 
-.create-post-modal .modal-header {
+.upload-media-modal .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -713,14 +415,14 @@ body {
     border-bottom: 1px solid #efefef;
 }
 
-.create-post-modal .modal-header h2 {
+.upload-media-modal .modal-header h2 {
     margin: 0;
     font-size: 1.2em;
     font-weight: 600;
     color: #262626;
 }
 
-.create-post-modal .close-btn {
+.upload-media-modal .close-btn {
     background: none;
     border: none;
     font-size: 24px;
@@ -728,38 +430,10 @@ body {
     color: #8e8e8e;
 }
 
-.create-post-modal .modal-body {
+.upload-media-modal .modal-body {
     padding: 20px;
     flex-grow: 1;
-    overflow-y: auto; /* Para scroll si el contenido es mucho */
-}
-
-.post-type-selector {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: center;
-}
-
-.post-type-selector .type-btn {
-    background-color: #efefef;
-    border: 1px solid #dbdbdb;
-    border-radius: 8px;
-    padding: 8px 15px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #262626;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.post-type-selector .type-btn.active {
-    background-color: #0095f6;
-    border-color: #0095f6;
-    color: #fff;
-}
-
-.media-upload-section {
-    margin-bottom: 20px;
+    overflow-y: auto;
 }
 
 .upload-area {
@@ -793,7 +467,7 @@ body {
     font-size: 0.9em;
 }
 
-.media-preview-container {
+.media-preview-container { /* Reutilizado para las previsualizaciones de medios seleccionados */
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -837,19 +511,7 @@ body {
     cursor: pointer;
 }
 
-.post-caption {
-    width: calc(100% - 20px);
-    min-height: 80px;
-    padding: 10px;
-    border: 1px solid #dbdbdb;
-    border-radius: 8px;
-    font-size: 0.95em;
-    resize: vertical;
-    margin-bottom: 20px;
-    box-sizing: border-box; /* Incluye padding en el ancho */
-}
-
-.publish-post-btn {
+.publish-post-btn { /* Reutilizado para "Añadir a Biblioteca" y "Guardar Publicación" */
     width: 100%;
     background-color: #0095f6;
     color: white;
@@ -860,19 +522,129 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    margin-top: 20px; /* Espacio superior */
 }
 
 .publish-post-btn:hover {
     background-color: #007acb;
 }
 
-/* --- MEDIA QUERIES PARA ADAPTAR A ESCRITORIO --- */
-@media (min-width: 768px) {
-    #app-container {
-        max-width: 935px; /* Ancho típico de Instagram en escritorio */
-        border: 1px solid #dbdbdb; /* Añadir borde en escritorio */
-    }
-    .feed-grid {
-        padding: 20px; /* Más padding en escritorio */
-    }
+/* --- MODAL PARA CREAR/EDITAR PUBLICACIÓN PROGRAMADA --- */
+#schedule-post-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3001; /* Mayor que el modal de subir medios */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
+
+#schedule-post-overlay:not(.hidden) {
+    opacity: 1;
+}
+
+.schedule-post-modal {
+    background-color: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px; /* Un poco más ancho */
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+#schedule-post-overlay:not(.hidden) .schedule-post-modal {
+    transform: scale(1);
+}
+
+.schedule-post-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #efefef;
+}
+
+.schedule-post-modal .modal-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #262626;
+}
+
+.schedule-post-modal .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #8e8e8e;
+}
+
+.schedule-post-modal .modal-body {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.schedule-post-modal .media-preview-section {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #fafafa;
+}
+
+.schedule-post-modal .form-group {
+    margin-bottom: 15px;
+}
+
+.schedule-post-modal .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.schedule-post-modal .form-group input,
+.schedule-post-modal .form-group select,
+.schedule-post-modal .form-group textarea {
+    width: calc(100% - 22px); /* Ajuste para padding/border */
+    padding: 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.schedule-post-modal .form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.schedule-post-modal .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+    width: 100%;
+}
+.schedule-post-modal .delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* --- ESTILOS PARA LA PREVISUALIZACIÓN DEL FEED DE INSTAGRAM --- */
