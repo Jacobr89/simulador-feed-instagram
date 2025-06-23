@@ -1,16 +1,52 @@
-<div id="app-container">
-    <header>...</header>
-    <main id="feed-container">
-        <div class="post-card" data-post-type="feed" data-post-id="123">...</div>
-        <div class="post-card" data-post-type="carousel" data-post-id="124">...</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Clone Preview</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div id="app-container">
+        <header class="app-header">
+            <h1>Instagram Clone</h1>
+            </header>
+        <main id="feed-container" class="feed-grid">
+            <div class="post-card" data-post-type="feed" data-post-id="post1">
+                <img src="https://via.placeholder.com/300x300/F0F0F0/000000?text=Feed+Post+1" alt="Publicación de Feed">
+            </div>
+            <div class="post-card" data-post-type="carousel" data-post-id="post2">
+                <img src="https://via.placeholder.com/300x300/E0E0E0/000000?text=Carrusel+1" alt="Publicación de Carrusel">
+                <i class="fas fa-images carousel-indicator-icon"></i>
+            </div>
+            <div class="post-card" data-post-type="feed" data-post-id="post3">
+                <img src="https://via.placeholder.com/300x300/D0D0D0/000000?text=Feed+Post+2" alt="Publicación de Feed">
+            </div>
+            <div class="post-card story-card" data-post-type="story" data-post-id="story1">
+                <div class="story-avatar-wrapper">
+                    <img src="https://via.placeholder.com/80x80/C0C0C0/000000?text=Historia" alt="Historia">
+                </div>
+                <span>Tu Historia</span>
+            </div>
+            <div class="post-card" data-post-type="reel" data-post-id="reel1">
+                <img src="https://via.placeholder.com/300x500/B0B0B0/000000?text=Reel+1" alt="Publicación de Reel">
+                <i class="fas fa-video reel-indicator-icon"></i>
+            </div>
+            <div class="post-card" data-post-type="feed" data-post-id="post4">
+                <img src="https://via.placeholder.com/300x300/A0A0A0/000000?text=Feed+Post+3" alt="Publicación de Feed">
+            </div>
         </main>
-    <footer>...</footer>
 
-    <div id="modal-overlay" class="hidden">
-        <div id="post-modal" class="modal-content">
+        <div id="modal-overlay" class="hidden">
+            <div id="post-modal" class="modal-content">
+                </div>
+        </div>
+
+        <div id="story-reel-viewer" class="hidden">
             </div>
     </div>
 
-    <div id="story-reel-viewer" class="hidden">
-        </div>
-</div>
+    <script src="script.js"></script>
+</body>
+</html>
