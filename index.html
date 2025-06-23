@@ -1,142 +1,58 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador de Feed Instagram</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      background: #fafafa;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    header {
-      padding: 1rem;
-      background-color: #fff;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    #feed {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 5px;
-      max-width: 600px;
-      margin-top: 1rem;
-    }
-    .post {
-      position: relative;
-      width: 100%;
-      padding-bottom: 100%;
-      background-size: cover;
-      background-position: center;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    #uploadForm {
-      margin: 1rem auto;
-      max-width: 600px;
-      text-align: center;
-    }
-    input[type="file"] {
-      margin: 1rem auto;
-    }
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-    }
-    .copy {
-      position: absolute;
-      bottom: 0;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      width: 100%;
-      font-size: 12px;
-      padding: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Feed de Instagram</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E1306C' d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.149-4.771-1.691-4.919-4.919-.058-1.265-.07-1.644-.07-4.85s.012-3.585.07-4.85c.149-3.227 1.664-4.771 4.919-4.919 1.265-.058 1.644-.07 4.85-.07zm0-2.163C8.768 0 8.381.011 7.151.071 3.549.231 1.458 2.308 1.29 5.922.235 9.141.223 9.516.223 13s.012 3.859.07 7.078c.148 3.614 2.23 5.705 5.844 5.864 3.227.058 3.617.07 7.078.07s3.859-.012 7.078-.07c3.612-.149 5.704-2.23 5.863-5.844.058-3.227.07-3.617.07-7.078s-.012-3.859-.07-7.078c-.149-3.612-2.23-5.704-5.844-5.863-3.227-.058-3.617-.07-7.078-.07zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 2.162a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm6.571-5.638a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E">
 </head>
 <body>
-  <header>
-    <h2>Simulador de Feed de Instagram</h2>
-    <p>Visualiza tu feed actual + publicaciones futuras</p>
-  </header>
+    <div class="instagram-container">
+        <div class="instagram-header">
+            <span id="headerTitle" class="header-title">Tu Feed de Instagram</span>
+            <div class="header-buttons" id="editModeButtons">
+                <input type="file" id="imageUpload" multiple accept="image/*" style="display: none;">
+                <label for="imageUpload" class="action-button upload-button">Subir Fotos</label>
+                <button id="generateLink" class="action-button generate-button">Compartir</button>
+            </div>
+             <span id="viewModeIndicator" class="view-mode-indicator" style="display: none;">Modo Vista Previa</span>
+        </div>
 
-  <section id="uploadForm">
-    <input type="file" id="imageInput" accept="image/*">
-    <br>
-    <textarea id="captionInput" placeholder="Escribe el copy de la publicación"></textarea>
-    <br>
-    <button onclick="addPost()">Agregar al Feed</button>
-    <button onclick="shareFeed()">Compartir por Link</button>
-  </section>
+        <div class="instagram-feed" id="instagramFeed">
+            <p id="noPostsMessage" class="message">
+                Comienza subiendo tus fotos para simular tu feed de Instagram.
+            </p>
+        </div>
 
-  <section id="feed"></section>
+        <div class="instagram-footer">
+            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJDb21pZW56byIgb2ZjdXN0YWJsZT0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0xMS45OTkgOWwyLjczNiAyLjczNmExIDEgMCAwIDEtLjY4MyAxLjYzOWwtMi4wNjItLjUxOGExIDEgMCAwIDAtMS4xMjYuNzY2bC0uNTE4IDIuMDYyYTEgMSAwIDAgMS0xLjYzOS0uNjgzbDIuNzM2LTIuNzM2YTEgMSAwIDAgMC0uMDA1LTEuMzg5TDguNCA4LjRhMSAxIDAgMCAxIDEuMzg4LS4wMDVMOC40IDguNEE3LjUgNy41IDAgMSAxIDEyIDcuNWExIDEgMCAwIDAgLjAwMS0yQTIuNSA1LjUgMCAwIDAgMTIgMy41YTkgOSAwIDEgMCAwIDE4LjVhOSA5IDAgMCAwIDkuMDAxLTlsLS4wMDItLjAwMi4wMDMtLjAwM2ExIDEgMCAwIDAtLjA0My0xLjk2OC43NTcuNzU3IDAgMCAxLS4yOTgtLjQ2N2E1LjUgNS41IDAgMCAwLTMuODYxLTguMDMyQTcuNTQ1IDcuNTQ1IDAgMCAwIDguNCAxLjVBOS4wMDMgOS4wMDMgMCAwIDAgNi42NDMgMi41NTNBOS4wMTMgOS4wMTMgMCAwIDAgMyA3LjVBNy41IDcuNSAwIDAgMSA4LjQgMjJhNy40ODQgNy44NDQgMCAwIDEtMi42NTMtLjM3NkE5IDkgMCAwIDAgMTIgMjJhOSA5IDAgMCAwIDkuMDA1LTkuMDA1eiIgZmlsbD0iIzI2MjYyNiI+PC9wYXRoPjwvc3ZnPg==" alt="Home" class="footer-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJCdXNjYXIiIG9mY3VzdGFibGU9InRydWUiIHJvbGU9ImltZyIgZGF0YS1qaWlkPSJfMzAxMDA2MTUwNzIiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE2LjcwNyAxNS4yOTNhMSAxIDAgMCAxLTEuNDE0IDEuNDE0bC0zLjU2MS0zLjU2LTQuMjQzIDQuMjQzbC0xLjQxNC0xLjQxNGw0LjI0My00LjI0M2wtMy41NjEtMy41NjJhMSAxIDAgMSAxIDEuNDE0LTEuNDE0bDMuNTYxIDMuNTYxbDQuMjQzLTQuMjQzbDEuNDE0IDEuNDE0bC00LjI0MyA0LjI0M2wzLjU2MSA1LjU1MXpNMTggMTBhOCAxIDAgMSAxIDAgMTYgOCA4IDAgMCAxIDAtMTN6bTAgMWE5IDkgMCAxIDAgMCAxOCA5IDkgMCAwIDAgMC0xOXoiIGZpbGw9IiMyNjI2MjYiPjwvcGF0aD48L3N2Zz==" alt="Search" class="footer-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJQbHVzIiBvZmN1c3RhYmxlPSJ0cnVlIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDEuNzVMNC43NSA1Ljk4djcuNzc4YTYgNiAwIDAgMCA2LjY2NSA1Ljk4NUwxMiAxOS43MDhsLjU4NS0uMDE1QTYgNiAwIDAgMCAxOS4yNSAxMy43NTdWMi41NTJMMTYuMjUyIDEuNzg1eiIgZmlsbD0iIzI2MjYyNiI+PC9wYXRoPjwvc3ZnPg==" alt="Add" class="footer-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJDb3Jhem9uIiBvZmN1c3RhYmxlPSJ0cnVlIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE2LjMgMy4xYy0xLjUzIDAtMy4wNjEuNzYzLTQuMyAxLjk3OS0xLjI0LTEuMjE1LTIuNzctMS45NzktNC4zLTEuOTc5LTQuNzcgMC03LjcgMy4xOTMtNy43IDcuNDI5IDAgMi44MTMgMi4yOTYgNS43MzcgNS4zMTIgOC4xOTMgMi40MTcgMS45NDcgNC44NTMgMy45MDkgNi45MzYgNS40NDMuMDkuMDY5LjE3OC4xMy4yNjQuMTgyLjg5LS41NzUgMS44NS0xLjIwMiAyLjg3OC0xLjgyM2MzLjMyNS0yLjI5MiA2LjIxMi01LjcyMiA2LjU1My04LjYxNS4yNzUtMi4zMjMuMTIyLTQuODctMS4yMTItNi44LS41OTItLjgxMi0xLjQ0OC0xLjQ2LTIuNDMzLTEuODc5LTIuMzgyLS44NS00Ljg5NS0uNjg2LTcuNzMzLTEuNjg2eiIgZmlsbD0iIzI2MjYyNiI+PC9wYXRoPjwvc3ZnPg==" alt="Likes" class="footer-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJQZXJmaWwiIG9mY3VzdGFibGU9InRydWUiIHJvbGU9ImltZyIgZGF0YS1qaWlkPSJfMzAxMDA2MTUwNzIiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJjLTMuNDI5IDAtNS44OTQgMi41MTItNS44OTQgNi4xMiAwIDEuNzYzLjU1MiAyLjgxNSA1LjI5NCA1LjIxMS43NjkuNjU3Ljk3NSAxLjY1NS43ODcgMi43NDctLjI2MyAxLjQxNC0uNzcxIDIuOTY3LTEuMDIgMy44MWE1LjA2MyA1LjA2MyAwIDAgMC0uMjEzLjg5Ny4zNjkuMzY5IDAgMCAwLS4wMS4wMThhNS4wMiA1LjAyIDAgMCAwLS4xNjIuNTY1LjcwNy43MDcgMCAwIDAgLjA3LjI5MmMuMTExLjE1OC4yNTIuMjY1LjQ0OS4zNjYuMTMzLjA1Ni4yMzEuMDU4LjMyMS4wNDguMjktLjAzLjYtLjA2Ni44NTMtLjA5LjE5Mi0uMDE4LjM3Mi0uMDE0LjU1NS0uMDA0Ljk3My4wNTUgMS44NDMuMDQ2IDIuOTk5LS4xNDMuMzkzLS4wNjYuNzctLjEyNCAxLjEtLjIxMy40MzEtLjEwNi44MDQtLjE4NiAxLjA5Ni0uMjczLjA1Mi0uMDEuMDktLjAyLjEyNS0uMDMyLjA2LS4wMjcuMTA1LS4wNTYuMTQ3LS4wOTMuMTA1LS4wOTMuMjExLS4xNzguMzAzLS4yMzMuMDYtLjA1LjEwNS0uMDguMTMyLS4xMDUuMDI2LS4wMjUuMDU0LS4wNDkuMDgyLS4wNzQuMTU5LS4xMzQuMzE4LS4yNTQuNDctLjM3Ni4xMDgtLjA4My4yMTYtLjE2Ni4zMjgtLjI0Ny4wMjgtLjAxOS4wNTUtLjAzOC4wODMtLjA1OC4wNDctLjAzNC4xMDItLjA3LjE1Ny0uMTA5LjE1NS0uMTEyLjMyMi0uMjIxLjQ3OC0uMzIuMDM0LS4wMjIuMDctLjA0NS4xMDUtLjA2OC4wNDYtLjAzLjA5LS4wNi4xMzQtLjA5LjAyLS4wMTUuMDQtLjAzLjA1OC0uMDQ3LjA0NS0uMDM2LjA4NS0uMDczLjEyMi0uMTE2LjAxLS4wMTIuMDIyLS4wMjMuMDMyLS4wMzYuMDI1LS4wMzcuMDQ1LS4wNzQuMDYtLjExLjAxNi0uMDMuMDMyLS4wNi4wNDUtLjA5LjAxMS0uMDMyLjAyLS4wNjUuMDItLjE2Mi4wMDMtLjE2Mi0uMDctLjg2Mi0uMjE2LTEuMjM2YTUuMTcgNS4xNyAwIDAgMC0uMzAzLTEuMjI3bC0uMzA0LS44Mi4wMTctMS4yMjcuMDU3LTEuNzI1Yy4wMzktMS4xNjctLjE5LTQuMjE3LTIuNTUxLTYuMzU2QzE1LjQ3OSAyLjM2NCAxMy44NTYgMiAxMiAyIiBmaWxsPSIjMjYyNjI2Ij48L3BhdGg+PC9zdmc+" alt="Profile" class="footer-icon">
+        </div>
 
-  <script>
-    let posts = [];
-
-    function addPost() {
-      const imageInput = document.getElementById('imageInput');
-      const captionInput = document.getElementById('captionInput');
-      if (!imageInput.files[0]) return alert("Debes seleccionar una imagen");
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const post = {
-          image: e.target.result,
-          caption: captionInput.value
-        };
-        posts.push(post);
-        renderFeed();
-        captionInput.value = "";
-      }
-      reader.readAsDataURL(imageInput.files[0]);
-    }
-
-    function renderFeed() {
-      const feed = document.getElementById('feed');
-      feed.innerHTML = "";
-      posts.forEach(post => {
-        const div = document.createElement('div');
-        div.className = 'post';
-        div.style.backgroundImage = `url(${post.image})`;
-
-        const caption = document.createElement('div');
-        caption.className = 'copy';
-        caption.innerText = post.caption;
-        div.appendChild(caption);
-
-        feed.appendChild(div);
-      });
-    }
-
-    function shareFeed() {
-      const encoded = btoa(JSON.stringify(posts));
-      const url = `${window.location.origin}${window.location.pathname}?feed=${encoded}`;
-      navigator.clipboard.writeText(url).then(() => {
-        alert("Link copiado al portapapeles:");
-      });
-    }
-
-    function loadFeedFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('feed')) {
-        try {
-          posts = JSON.parse(atob(params.get('feed')));
-          renderFeed();
-        } catch (e) {
-          alert("Error al cargar feed");
-        }
-      }
-    }
-
-    loadFeedFromURL();
-  </script>
-</body>
-</html>
+        <div id="previewModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close-button">&times;</span>
+                    <span id="modalUsername" class="modal-username">Usuario</span>
+                    <span id="modalOptions" class="modal-options">...</span>
+                </div>
+                <div id="modalImageContainer" class="modal-image-container">
+                    <img id="modalImage" src="#" alt="Vista Previa">
+                    <div id="carouselIndicator" class="carousel-indicator" style="display: none;">
+                        <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+                    </div>
+                    <div id="reelControls" class="reel-controls" style="display: none;">
+                        <div class="reel-overlay">
+                            <div class="reel-user-info">
+                                <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJQZXJmaWwiIG9mY3VzdGFibGU9InRydWUiIHJvbGU9ImltZyIgZGF0YS1qaWlkPSJfMzAxMDA2MTUwNzIiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJjLTMuNDI5IDAtNS44OTQgMi41MTItNS44OTQgNi4xMiAwIDEuNzYzLjU1MiAyLjgxNSA1LjI5NCA1LjIxMS43NjkuNjU3Ljk3NSAxLjY1NS43ODcgMi43NDctLjI2MyAxLjQxNC0uNzcxIDIuOTY3LTEuMDIgMy44MWE1LjA2MyA1LjA2MyAwIDAgMC0uMjEzLjg5Ny4zNjkuMzY5IDAgMCAwLS4wMS4wMThhNS4wMiA1LjAyIDAgMCAwLS4xNjIuNTY1LjcwNy43MDcgMCAwIDAgLjA3LjI5MmMuMTExLjE1OC4yNTIuMjY1LjQ0OS4zNjYuMTMzLjA1Ni4yMzEuMDU4LjMyMS4wNDguMjktLjAzLjYtLjA2Ni44NTMtLjA5LjE5Mi0uMDE4LjM3Mi0uMDE0LjU1NS0uMDA0Ljk3My4wNTUgMS44NDMuMDQ2IDIuOTk5LS4xNDMuMzkzLS4wNjYuNzctLjEyNCAxLjEtLjIxMy40MzEtLjEwNi44MDQtLjE4NiAxLjA5Ni0uMjczLjA1Mi0uMDEuMDktLjAyLjEyNS0uMDMyLjA2LS4wMjcuMTA1LS4wNTYuMTQ3LS4wOTMuMTA1LS4wOTMuMjExLS4xNzguMzAzLS4yMzMuMDYtLjA1LjEwNS0uMDguMTMyLS4xMDUuMDI2LS4wMjUuMDU0LS4wNDkuMDgyLS4wNzQuMTU5LS4xMzQuMzE4LS4yNTQuNDctLjM3Ni4xMDgtLjA4My4yMTYtLjE2Ni4zMjgtLjI0Ny4wMjgtLjAxOS4wNTUtLjAzOC4wODMtLjA1OC4wNDctLjAzNC4xMDItLjA3LjE1Ny0uMTA5LjE1NS0uMTEyLjMyMi0uMjIxLjQ3OC0uMzIuMDM0LS4wMjIuMDctLjA0NS4xMDUtLjA2OC4wNDYtLjAzLjA5LS4wNi4xMzQtLjA5LjAyLS4wMTUuMDQtLjAzLjA1OC0uMDQ3LjA0NS0uMDM2LjA4NS0uMDczLjEyMi0uMTE2LjAxLS4wMTIuMDIyLS4wMjMuMDMyLS4wMzYuMDI1LS4wMzcuMDQ1LS4wNzQuMDYtLjExLjAxNi0uMDMuMDMyLS4wNi4wNDUtLjA5LjAxMS0uMDMyLjAyLS4wNjUuMDItLjE2Mi4wMDMtLjE2Mi0uMDctLjg2Mi0uMjE2LTEuMjM2YTUuMTcgNS4xNyAwIDAgMC0uMzAzLTEuMjI3bC0uMzA0LS44Mi4wMTctMS4yMjcuMDU3LTEuNzI1Yy4wMzktMS4xNjctLjE5LTQuMjE3LTIuNTUxLTYuMzU2QzE1LjQ3OSAyLjM2NCAxMy44NTYgMiAxMiAyIiBmaWxsPSIjZmZmIj48L3BhdGg+PC9zdmc+" alt="User Avatar" class="reel-avatar">
+                                <span class="reel-username">Usuario</span>
+                                <button class="reel-follow">Seguir</button>
+                            </div>
+                            <div class="reel-actions">
+                                <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJDb3Jhem9uIiBvZmN1c3RhYmxlPSJ0cnVlIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE2LjcgMy4xYy0xLjUzIDAtMy4wNjEuNzYzLTQuMyAxLjk3OS0xLjI0LTEuMjE1LTIuNzctMS45NzktNC4zLTEuOTc5LTQuNzcgMC03LjcgMy4xOTMtNy43IDcuNDI5IDAgMi44MTMgMi4yOTYgNS43MzcgNS4zMTIgOC4xOTMgMi40MTcgMS45NDcgNC44NTMgMy45MDkgNi45MzYgNS40NDMuMDkuMDY5LjE3OC4xMy4yNjQuMTgyLjg5LS41NzUgMS44NS0xLjIwMiAyLjg3OC0xLjgyM2MzLjMyNS0yLjI5MiA2LjIxMi01LjcyMiA2LjU1My04LjYxNS4yNzUtMi4zMjMuMTIyLTQuODctMS4yMTItNi44LS41OTItLjgxMi0xLjQ0OC0xLjQ2LTIuNDMzLTEuODc5LTIuMzgyLS44NS00Ljg5NS0uNjg2LTcuNzMzLTEuNjg2eiIgZmlsbD0iI2ZmZiI+PC9wYXRoPjwvc3ZnPg==" alt="Like" class="reel-action-icon">
+                                <span class="reel-action-count"></span>
+                                <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJDb21lbnRhcmkiIG9mY3VzdGFibGU9InRydWUiIHJvbGU9ImltZyIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbDpzcGFjPSJwcmVzZXJ2ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTQuMDYgMTQuNDc2Yy4wMDQuMDA2LjAwOS4wMTMuMDExLjAxOSAxLjQ4OSAyLjY4IDEuNjg1IDYuNjIxIDEuNzExIDYuODExLjAyNi4yMy4wNDcuNDYyLjA0Ny42OTUgMCAxLjEwNi0uODk2IDEuOTk5LTEuOTk3IDEuOTk5aC0xLjQxNmMtLjI3IDAtLjUzMy0uMTA4LS43MjEtLjI4OC0uNzQ4LS43NDctMS43MjgtMS4yNDItMi43MzItMS40NDMtLjYyNi0uMTI0LTEuMjY2LS4xMzEtMS44OTctLjAyMi0uNzIuMTI3LTEuMzY4LjQxMi0xLjkzNy44MjQtLjQ1OC4zMzQtLjgyOS43MzYtMS4xMSAxLjI0LS4zMTguNTkzLS40NzcuOTgtLjQ3NyAxLjYyM3YxLjU4NWMwIC4yNjYuMTA4LjUyOS4yODguNzE0LjI1Ni4yNjYuNjEuNDYyLjk4OC41NjEuMjg0LjA3NC41NzcuMTEuODczLjExaDEuMTY0YTEuOTk5IDIuMDAwIDAgMCAwIDEuNzMyLTEuMDY3Yy4xOTEtLjMyNS4zMzItLjY3LjQyMi0xLjAxNy4wMDQtLjAxLjAwOS0uMDIuMDEyLS4wMy42NTYtMi4yMzIgMS4zMzctNS4yNzggMS4zODUtNS41NjEuMDA4LS4wNDYuMDE3LS4wOS4wMjUtLjEzMy4wMzItLjE4NC4wNi0uMzY5LjA4Mi0uNTU2Yy4wMDQtLjAwNi4wMDktLjAxMy4wMTEtLjAxOS4wMDQtLjAwNi4wMDktLjAxMy4wMTEtLjAxOS4wMDUtLjAxLjAwOS0uMDE5LjAxMy0uMjg0LjEwNy0uNDg4LjI4NC0uNTg4LjQ4My0uMTUyLjMxNS0uMjYzLjY2LS4yNjMuOTY4IDAgLjU2OS4yMTkgMS4xMjQuNjE0IDEuNTY0LjQzNC40NzYuOTgyLjc0OCAxLjUzOS43NDhoLjA2MWMuOTQ1IDAgMS43OS0uMzcyIDIuNDQ2LTEuMDMuNTM3LS41MzYuODU1LTEuMTc4LjkzMy0xLjgzNC4wMDQtLjAyNi4wMDgtLjA1Mi4wMTEtLjA3OC4wMDQtLjAyNi4wMDgtLjA1Mi4wMTEtLjA3OHYtLjAwOWwuMDAxLS4wMDMuMDAxLS4wMDMuMDAxLS4wMDNzLS4wMDEuMDAzLS4wMDEuMDA2LS4wMDEuMDA5djAuMDA5YzAtLjAxNi0uMDA3LS4wMzEtLjAxLS4wNDgtLjAwNi0uMDM1LS4wMTItLjA2OS0uMDE2LS4xMDMuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2LS4wNDQuMDA3LS4wNjYuMDAzLS4wMjIuMDA2

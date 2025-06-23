@@ -1,0 +1,196 @@
+/* Estilos Generales */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fafafa;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea al inicio para que el header se vea arriba */
+    min-height: 100vh;
+    padding-top: 60px; /* Espacio para el header fijo */
+    padding-bottom: 60px; /* Espacio para el footer fijo */
+    box-sizing: border-box; /* Incluye padding en el ancho/alto */
+}
+
+.instagram-container {
+    width: 100%;
+    max-width: 600px; /* Ancho máximo para simular el feed de Instagram */
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+/* Header */
+.instagram-header {
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Centra el header */
+    max-width: 600px; /* Mismo ancho que el contenedor principal */
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.instagram-header span {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #262626;
+    flex-grow: 1; /* Permite que el título ocupe espacio */
+    text-align: center;
+}
+
+.upload-button, .generate-button {
+    background-color: #0095f6;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+    margin: 0 5px;
+    transition: background-color 0.2s ease;
+}
+
+.upload-button:hover, .generate-button:hover {
+    background-color: #007bb5;
+}
+
+/* Feed de Publicaciones */
+.instagram-feed {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas para el feed */
+    gap: 2px; /* Pequeño espacio entre publicaciones */
+    width: 100%;
+    min-height: 200px; /* Para que siempre tenga un mínimo de altura */
+    box-sizing: border-box;
+}
+
+.instagram-post {
+    width: 100%;
+    padding-bottom: 100%; /* Truco para hacer el div cuadrado */
+    position: relative;
+    overflow: hidden;
+    background-color: #f0f0f0; /* Color de fondo mientras carga la imagen */
+    border: 1px solid #eee; /* Borde sutil para simular cuadrícula */
+    box-sizing: border-box;
+}
+
+.instagram-post img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta la imagen para que cubra el espacio */
+    cursor: pointer; /* Indica que es interactivo */
+}
+
+.instagram-post p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para el texto */
+    color: white;
+    padding: 8px;
+    font-size: 0.85em;
+    box-sizing: border-box;
+    display: none; /* Oculto por defecto */
+    word-wrap: break-word; /* Rompe palabras largas */
+    max-height: 50%; /* Limita la altura del texto */
+    overflow-y: auto; /* Permite scroll si el texto es muy largo */
+}
+
+.instagram-post:hover p {
+    display: block; /* Muestra el texto al pasar el ratón */
+}
+
+/* Mensaje de no publicaciones */
+.message {
+    grid-column: 1 / -1; /* Ocupa todas las columnas */
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 1.1em;
+    margin-top: 50px;
+}
+
+/* Footer */
+.instagram-footer {
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid #dbdbdb;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Centra el footer */
+    max-width: 600px; /* Mismo ancho que el contenedor principal */
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.footer-icon {
+    width: 28px;
+    height: 28px;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.footer-icon:hover {
+    opacity: 1;
+}
+
+/* Estilos para modo compartido (lectura) */
+.shared-mode .instagram-header .upload-button,
+.shared-mode .instagram-header .generate-button {
+    display: none; /* Oculta botones en modo compartido */
+}
+
+.shared-mode .instagram-header #headerTitle {
+    flex-grow: 0;
+    margin-right: 15px; /* Ajusta el espacio del título */
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .instagram-container, .instagram-header, .instagram-footer {
+        width: 100%;
+        max-width: none; /* Ocupa todo el ancho en pantallas pequeñas */
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    body {
+        padding-top: 50px; /* Ajusta padding para header más pequeño */
+        padding-bottom: 50px; /* Ajusta padding para footer más pequeño */
+    }
+
+    .instagram-header {
+        padding: 8px 0;
+    }
+
+    .upload-button, .generate-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+
+    .footer-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
