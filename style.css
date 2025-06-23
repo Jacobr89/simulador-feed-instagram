@@ -1,63 +1,144 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin: 0;
-    background-color: #fafafa;
-    color: #262626;
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-}
-
-#app-container {
-    width: 100%;
-    max-width: 935px; /* Ancho típico del feed de Instagram */
-    background-color: #fff;
-    border-left: 1px solid #dbdbdb;
-    border-right: 1px solid #dbdbdb;
-    box-sizing: border-box;
-}
-
+/* --- NUEVOS ESTILOS PARA LA CABECERA Y GESTIÓN DE CUENTAS --- */
 .app-header {
-    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
     border-bottom: 1px solid #dbdbdb;
-    text-align: center;
     background-color: #fff;
     position: sticky;
     top: 0;
     z-index: 50;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sutil sombra */
+}
+
+.header-left .instagram-logo {
+    height: 30px; /* Tamaño del logo de Instagram */
+    object-fit: contain;
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-selector {
+    padding: 8px 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    appearance: none; /* Elimina estilos por defecto del select */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.4L146.2%20208.6%205.4%2069.4h281.6z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 12px auto;
+    padding-right: 25px; /* Espacio para el icono */
+}
+
+.add-account-btn, .new-post-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #262626;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+.add-account-btn:hover, .new-post-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- SECCIÓN DE HISTORIAS --- */
+.stories-section {
+    display: flex;
+    overflow-x: auto; /* Permite desplazamiento horizontal */
+    padding: 10px 0;
+    border-bottom: 1px solid #dbdbdb;
+    white-space: nowrap; /* Evita que los elementos salten de línea */
+    -webkit-overflow-scrolling: touch; /* Suaviza el scroll en iOS */
+    scrollbar-width: none; /* Oculta la barra de scroll en Firefox */
+    -ms-overflow-style: none;  /* Oculta la barra de scroll en IE/Edge */
+}
+
+.stories-section::-webkit-scrollbar {
+    display: none; /* Oculta la barra de scroll en WebKit */
+}
+
+.story-card {
+    flex: 0 0 auto; /* No permite que las tarjetas se redimensionen */
+    width: 90px; /* Ancho fijo para cada historia */
+    margin: 0 8px; /* Espacio entre historias */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 0;
+    height: auto;
+    background: none;
+}
+
+.story-card .story-avatar-wrapper {
+    width: 66px; /* Tamaño del círculo externo de la historia */
+    height: 66px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 2px; /* Espacio para el borde de la historia */
+}
+
+.story-card img {
+    width: 60px; /* Tamaño real del avatar dentro del borde */
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #fff; /* Borde blanco dentro del gradiente */
+    object-fit: cover;
+    position: static;
+}
+
+.story-card span {
+    font-size: 0.75em;
+    color: #262626;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- SECCIÓN PRINCIPAL DEL FEED --- */
+#main-content {
+    padding-top: 10px; /* Espacio debajo de la cabecera */
 }
 
 .feed-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2px; /* Pequeño espacio entre publicaciones */
-    padding: 2px;
+    gap: 3px; /* Pequeño espacio entre publicaciones */
+    padding: 3px;
+    max-width: 935px; /* Mismo ancho que el contenedor principal */
+    margin: 0 auto; /* Centrar la cuadrícula */
 }
 
 .post-card {
     position: relative;
     width: 100%;
-    padding-bottom: 100%; /* Truco para hacer las celdas cuadradas */
+    padding-bottom: 100%; /* Cuadrado */
     background-color: #eee;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.1s ease-in-out;
+    transition: transform 0.1s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .post-card:hover {
     transform: scale(1.01);
+    opacity: 0.9; /* Efecto sutil al pasar el ratón */
 }
 
-.post-card img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Recorta la imagen para llenar el espacio */
-}
-
-/* Indicadores para Carrusel y Reel en la vista de feed */
+/* Indicadores de tipo de publicación en la cuadrícula */
 .carousel-indicator-icon,
 .reel-indicator-icon {
     position: absolute;
@@ -69,522 +150,225 @@ body {
     z-index: 2;
 }
 
-/* Estilos de las tarjetas de historia en el feed */
-.story-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 0; /* Anula el truco cuadrado para historias */
-    height: auto;
-    background: none;
-    cursor: pointer;
-}
-
-.story-card .story-avatar-wrapper {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 5px;
-    padding: 3px; /* Espacio para el borde de la historia */
-}
-
-.story-card img {
-    width: 74px;
-    height: 74px;
-    border-radius: 50%;
-    border: 3px solid #fff; /* Borde blanco dentro del gradiente */
-    object-fit: cover;
-    position: static; /* Anula el absoluto del .post-card img */
-}
-
-.story-card span {
-    font-size: 0.85em;
-    color: #8e8e8e;
-    text-align: center;
-}
-
-/* --- Modales y Vistas de Pantalla Completa --- */
-
-.hidden {
-    display: none !important;
-}
-
-#modal-overlay {
+/* --- MODAL PARA CREAR PUBLICACIÓN --- */
+#create-post-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.65); /* Fondo semi-transparente */
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 3000;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
 
-#modal-overlay:not(.hidden) {
+#create-post-overlay:not(.hidden) {
     opacity: 1;
 }
 
-.modal-content {
+.create-post-modal {
     background-color: #fff;
-    border-radius: 8px;
-    display: flex;
-    max-width: 950px; /* Ancho típico de las publicaciones en modal */
-    max-height: 90vh;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
     transform: scale(0.9);
     transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh; /* Para que no se desborde en pantallas pequeñas */
 }
 
-#modal-overlay:not(.hidden) .modal-content {
+#create-post-overlay:not(.hidden) .create-post-modal {
     transform: scale(1);
 }
 
-.modal-content .close-btn {
-    position: absolute;
-    top: 15px;
-    right: -40px; /* Fuera del modal, al lado */
-    background: none;
-    border: none;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-    z-index: 1001;
-    text-shadow: 0px 0px 5px rgba(0,0,0,0.8);
-    transition: transform 0.2s ease-in-out;
-}
-
-.modal-content .close-btn:hover {
-    transform: rotate(90deg);
-}
-
-
-/* Diseño para publicaciones de Feed dentro del modal */
-.modal-content.feed-post-view {
-    flex-direction: row; /* Imagen a la izquierda, info a la derecha */
-    width: 950px; /* Ancho fijo para ejemplo */
-    height: 600px; /* Alto fijo para ejemplo */
-}
-
-.modal-content.feed-post-view .media-section {
-    flex: 2; /* Ocupa más espacio */
+.create-post-modal .modal-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    background-color: #000; /* Fondo para la imagen/video */
-}
-
-.modal-content.feed-post-view .media-section img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Ajusta la imagen sin recortar */
-}
-
-.modal-content.feed-post-view .info-section {
-    flex: 1; /* Ocupa menos espacio */
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid #efefef;
-    background-color: #fff;
-}
-
-.modal-content.feed-post-view .post-header {
-    display: flex;
-    align-items: center;
-    padding: 14px 16px;
+    padding: 15px 20px;
     border-bottom: 1px solid #efefef;
 }
 
-.modal-content.feed-post-view .post-header .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 12px;
-}
-
-.modal-content.feed-post-view .post-header .username {
+.create-post-modal .modal-header h2 {
+    margin: 0;
+    font-size: 1.2em;
     font-weight: 600;
-    flex-grow: 1;
+    color: #262626;
 }
 
-.modal-content.feed-post-view .follow-btn {
+.create-post-modal .close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #8e8e8e;
+}
+
+.create-post-modal .modal-body {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto; /* Para scroll si el contenido es mucho */
+}
+
+.post-type-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.post-type-selector .type-btn {
+    background-color: #efefef;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #262626;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.post-type-selector .type-btn.active {
+    background-color: #0095f6;
+    border-color: #0095f6;
+    color: #fff;
+}
+
+.media-upload-section {
+    margin-bottom: 20px;
+}
+
+.upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #dbdbdb;
+    border-radius: 8px;
+    padding: 30px;
+    cursor: pointer;
+    background-color: #fafafa;
+    text-align: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.upload-area:hover {
+    background-color: #f0f0f0;
+    border-color: #8e8e8e;
+}
+
+.upload-area .upload-icon {
+    font-size: 60px;
+    color: #8e8e8e;
+    margin-bottom: 15px;
+}
+
+.upload-area p {
+    margin: 0;
+    color: #8e8e8e;
+    font-size: 0.9em;
+}
+
+.media-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.media-preview-item {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #eee;
+}
+
+.media-preview-item img,
+.media-preview-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.media-preview-item .remove-media-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+.post-caption {
+    width: calc(100% - 20px);
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    font-size: 0.95em;
+    resize: vertical;
+    margin-bottom: 20px;
+    box-sizing: border-box; /* Incluye padding en el ancho */
+}
+
+.publish-post-btn {
+    width: 100%;
     background-color: #0095f6;
     color: white;
     border: none;
-    border-radius: 4px;
-    padding: 6px 10px;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 1.1em;
     font-weight: 600;
     cursor: pointer;
-    font-size: 0.85em;
+    transition: background-color 0.2s ease;
 }
 
-.modal-content.feed-post-view .comments-section {
-    flex-grow: 1;
-    padding: 16px;
-    overflow-y: auto; /* Scroll para comentarios */
-    font-size: 0.875em;
+.publish-post-btn:hover {
+    background-color: #007acb;
 }
 
-.modal-content.feed-post-view .comments-section .caption-text {
-    margin-bottom: 10px;
+/* --- ESTILOS GENERALES Y MEDIA QUERIES (Para un look más de app) --- */
+body {
+    background-color: #fff; /* Fondo blanco como Instagram */
 }
 
-.modal-content.feed-post-view .comments-section p {
-    margin-bottom: 8px;
-    line-height: 1.4;
+#app-container {
+    border: none; /* Quitar bordes del contenedor principal */
+    max-width: 100%; /* Ocupar todo el ancho en móvil */
 }
 
-.modal-content.feed-post-view .post-actions-footer {
-    padding: 6px 16px;
-    border-top: 1px solid #efefef;
-}
-
-.modal-content.feed-post-view .action-icons {
-    display: flex;
-    gap: 16px;
-    font-size: 24px;
-    padding: 8px 0;
-}
-
-.modal-content.feed-post-view .action-icons i {
-    cursor: pointer;
-}
-
-.modal-content.feed-post-view .likes-count {
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.modal-content.feed-post-view .time-ago {
-    font-size: 0.75em;
-    color: #8e8e8e;
-    margin-bottom: 10px;
-}
-
-.modal-content.feed-post-view .comment-input-section {
-    border-top: 1px solid #efefef;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-}
-
-.modal-content.feed-post-view .comment-input-section input {
-    flex-grow: 1;
-    border: none;
-    padding: 8px 0;
-    font-size: 0.9em;
-}
-
-.modal-content.feed-post-view .comment-input-section input:focus {
-    outline: none;
-}
-
-.modal-content.feed-post-view .comment-input-section button {
-    background: none;
-    border: none;
-    color: #0095f6;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-/* Diseño para Carrusel dentro del modal */
-.modal-content.carousel-post-view .carousel-media-container {
-    position: relative;
-    width: 600px; /* Ancho fijo para ejemplo */
-    height: 600px; /* Alto fijo para ejemplo */
-    background-color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.modal-content.carousel-post-view .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+.app-header {
     width: 100%;
-    height: 100%;
+    box-sizing: border-box;
 }
 
-.modal-content.carousel-post-view .carousel-item {
-    min-width: 100%; /* Cada imagen ocupa el 100% del contenedor */
-    height: 100%;
-    object-fit: contain;
-}
-
-.modal-content.carousel-post-view .carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 24px;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content.carousel-post-view .carousel-nav.prev {
-    left: 10px;
-}
-.modal-content.carousel-post-view .carousel-nav.next {
-    right: 10px;
-}
-
-.modal-content.carousel-post-view .carousel-indicators {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 5px;
-    z-index: 10;
-}
-
-.modal-content.carousel-post-view .carousel-indicators .indicator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: rgba(255,255,255,0.5);
-}
-
-.modal-content.carousel-post-view .carousel-indicators .indicator.active {
-    background-color: #fff;
-}
-
-/* --- Visor de Historias y Reels (Pantalla Completa) --- */
-#story-reel-viewer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000; /* Mayor que el modal normal */
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-#story-reel-viewer:not(.hidden) {
-    opacity: 1;
-}
-
-.story-reel-content {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    max-width: 400px; /* Ancho típico para historias/reels en móvil */
-    max-height: 100vh; /* Para pantallas de escritorio */
-}
-
-.story-reel-media {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Ajusta el contenido sin recortar */
-    background-color: black;
-}
-
-.story-reel-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    z-index: 10;
-}
-
-.story-reel-overlay .top-bar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.story-reel-overlay .progress-bar-container {
-    flex-grow: 1;
-    display: flex;
-    gap: 3px;
-    margin-right: 10px;
-}
-
-.story-reel-overlay .progress-segment {
-    flex-grow: 1;
-    height: 3px;
-    background-color: rgba(255,255,255,0.4);
-    border-radius: 2px;
-}
-
-.story-reel-overlay .progress-segment.active {
-    background-color: #fff;
-}
-
-.story-reel-overlay .user-info {
-    display: flex;
-    align-items: center;
-    margin-right: auto; /* Empuja el botón cerrar a la derecha */
-}
-
-.story-reel-overlay .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 8px;
-    border: 1px solid rgba(255,255,255,0.5);
-}
-
-.story-reel-overlay .username {
-    font-weight: 600;
-    margin-right: 8px;
-}
-
-.story-reel-overlay .time-elapsed {
-    font-size: 0.9em;
-    color: rgba(255,255,255,0.8);
-}
-
-.story-reel-overlay .close-btn {
-    background: none;
-    border: none;
-    font-size: 30px;
-    color: white;
-    cursor: pointer;
-    line-height: 1;
-}
-
-.story-reel-overlay .bottom-bar {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.story-reel-overlay .message-input {
-    flex-grow: 1;
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 25px;
-    padding: 10px 15px;
-    color: white;
-    font-size: 0.95em;
-    margin-right: 10px;
-}
-
-.story-reel-overlay .message-input::placeholder {
-    color: rgba(255,255,255,0.7);
-}
-
-.story-reel-overlay .message-input:focus {
-    outline: none;
-    border-color: white;
-}
-
-.story-reel-overlay .action-icon {
-    font-size: 26px;
-    margin-left: 15px;
-    cursor: pointer;
-}
-
-/* Acciones para Reels (verticales a la derecha) */
-.reel-actions-vertical {
-    position: absolute;
-    right: 15px;
-    bottom: 80px; /* Sobre la barra de mensaje */
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    color: white;
-    text-align: center;
-    font-size: 14px;
-    z-index: 10;
-}
-
-.reel-actions-vertical .action-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-}
-
-.reel-actions-vertical .action-item i {
-    font-size: 28px;
-    margin-bottom: 5px;
-}
-
-/* Info del reel abajo a la izquierda */
-.reel-info-bottom-left {
-    position: absolute;
-    bottom: 80px; /* Sobre la barra de mensaje */
-    left: 15px;
-    color: white;
-    z-index: 10;
-}
-
-.reel-info-bottom-left p {
-    margin: 0;
-}
-
-.reel-info-bottom-left .username-reel {
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.reel-info-bottom-left .reel-caption {
-    font-size: 0.9em;
-    margin-bottom: 5px;
-}
-
-.reel-info-bottom-left .reel-audio {
-    font-size: 0.85em;
-    display: flex;
-    align-items: center;
-}
-
-.reel-info-bottom-left .reel-audio i {
-    margin-right: 5px;
-}
-
-/* Áreas de navegación para historias (clic a los lados) */
-.story-nav-area {
-    position: absolute;
-    top: 0;
-    width: 40%;
-    height: 100%;
-    z-index: 15; /* Sobre el contenido, bajo el overlay */
-    cursor: pointer;
-}
-
-.story-nav-area.left {
-    left: 0;
-}
-
-.story-nav-area.right {
-    right: 0;
+@media (min-width: 768px) {
+    #app-container {
+        max-width: 935px; /* Ancho típico de Instagram en escritorio */
+        border: 1px solid #dbdbdb; /* Volver a poner el borde en escritorio */
+    }
+    .feed-grid {
+        padding: 20px; /* Más padding en escritorio */
+    }
 }
