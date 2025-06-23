@@ -1,4 +1,115 @@
-/* Básicos para el modal y el viewer */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    background-color: #fafafa;
+    color: #262626;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#app-container {
+    width: 100%;
+    max-width: 935px; /* Ancho típico del feed de Instagram */
+    background-color: #fff;
+    border-left: 1px solid #dbdbdb;
+    border-right: 1px solid #dbdbdb;
+    box-sizing: border-box;
+}
+
+.app-header {
+    padding: 20px;
+    border-bottom: 1px solid #dbdbdb;
+    text-align: center;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.feed-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px; /* Pequeño espacio entre publicaciones */
+    padding: 2px;
+}
+
+.post-card {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* Truco para hacer las celdas cuadradas */
+    background-color: #eee;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.post-card:hover {
+    transform: scale(1.01);
+}
+
+.post-card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta la imagen para llenar el espacio */
+}
+
+/* Indicadores para Carrusel y Reel en la vista de feed */
+.carousel-indicator-icon,
+.reel-indicator-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+    z-index: 2;
+}
+
+/* Estilos de las tarjetas de historia en el feed */
+.story-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0; /* Anula el truco cuadrado para historias */
+    height: auto;
+    background: none;
+    cursor: pointer;
+}
+
+.story-card .story-avatar-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 3px; /* Espacio para el borde de la historia */
+}
+
+.story-card img {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    border: 3px solid #fff; /* Borde blanco dentro del gradiente */
+    object-fit: cover;
+    position: static; /* Anula el absoluto del .post-card img */
+}
+
+.story-card span {
+    font-size: 0.85em;
+    color: #8e8e8e;
+    text-align: center;
+}
+
+/* --- Modales y Vistas de Pantalla Completa --- */
+
 .hidden {
     display: none !important;
 }
@@ -9,67 +120,256 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+    background-color: rgba(0, 0, 0, 0.65); /* Fondo semi-transparente */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#modal-overlay:not(.hidden) {
+    opacity: 1;
 }
 
 .modal-content {
-    background-color: #fff; /* O un color oscuro para el modo noche */
+    background-color: #fff;
     border-radius: 8px;
-    display: flex; /* Para diseño interno del modal */
-    max-width: 90%;
-    max-height: 90%;
-    overflow: hidden; /* Para contenido que exceda */
-    position: relative; /* Para el botón de cerrar */
-}
-
-/* Estilos de publicación de Feed/Carrusel dentro del modal */
-.modal-content .post-header {
     display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    max-width: 950px; /* Ancho típico de las publicaciones en modal */
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
 }
 
-.modal-content .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.modal-content .username {
-    font-weight: bold;
-    flex-grow: 1;
+#modal-overlay:not(.hidden) .modal-content {
+    transform: scale(1);
 }
 
 .modal-content .close-btn {
+    position: absolute;
+    top: 15px;
+    right: -40px; /* Fuera del modal, al lado */
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 30px;
+    color: white;
     cursor: pointer;
-    position: absolute; /* Para posicionarlo en la esquina del modal */
-    top: 10px;
-    right: 10px;
-    color: #fff; /* Si el modal es oscuro */
+    z-index: 1001;
+    text-shadow: 0px 0px 5px rgba(0,0,0,0.8);
+    transition: transform 0.2s ease-in-out;
 }
 
-.modal-content .post-media img,
-.modal-content .carousel-item {
+.modal-content .close-btn:hover {
+    transform: rotate(90deg);
+}
+
+
+/* Diseño para publicaciones de Feed dentro del modal */
+.modal-content.feed-post-view {
+    flex-direction: row; /* Imagen a la izquierda, info a la derecha */
+    width: 950px; /* Ancho fijo para ejemplo */
+    height: 600px; /* Alto fijo para ejemplo */
+}
+
+.modal-content.feed-post-view .media-section {
+    flex: 2; /* Ocupa más espacio */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000; /* Fondo para la imagen/video */
+}
+
+.modal-content.feed-post-view .media-section img {
     max-width: 100%;
-    height: auto;
-    display: block;
+    max-height: 100%;
+    object-fit: contain; /* Ajusta la imagen sin recortar */
 }
 
-.modal-content .post-actions,
-.modal-content .post-details {
+.modal-content.feed-post-view .info-section {
+    flex: 1; /* Ocupa menos espacio */
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #efefef;
+    background-color: #fff;
+}
+
+.modal-content.feed-post-view .post-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #efefef;
+}
+
+.modal-content.feed-post-view .post-header .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.modal-content.feed-post-view .post-header .username {
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.modal-content.feed-post-view .follow-btn {
+    background-color: #0095f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.modal-content.feed-post-view .comments-section {
+    flex-grow: 1;
+    padding: 16px;
+    overflow-y: auto; /* Scroll para comentarios */
+    font-size: 0.875em;
+}
+
+.modal-content.feed-post-view .comments-section .caption-text {
+    margin-bottom: 10px;
+}
+
+.modal-content.feed-post-view .comments-section p {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.modal-content.feed-post-view .post-actions-footer {
+    padding: 6px 16px;
+    border-top: 1px solid #efefef;
+}
+
+.modal-content.feed-post-view .action-icons {
+    display: flex;
+    gap: 16px;
+    font-size: 24px;
+    padding: 8px 0;
+}
+
+.modal-content.feed-post-view .action-icons i {
+    cursor: pointer;
+}
+
+.modal-content.feed-post-view .likes-count {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.modal-content.feed-post-view .time-ago {
+    font-size: 0.75em;
+    color: #8e8e8e;
+    margin-bottom: 10px;
+}
+
+.modal-content.feed-post-view .comment-input-section {
+    border-top: 1px solid #efefef;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+}
+
+.modal-content.feed-post-view .comment-input-section input {
+    flex-grow: 1;
+    border: none;
+    padding: 8px 0;
+    font-size: 0.9em;
+}
+
+.modal-content.feed-post-view .comment-input-section input:focus {
+    outline: none;
+}
+
+.modal-content.feed-post-view .comment-input-section button {
+    background: none;
+    border: none;
+    color: #0095f6;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Diseño para Carrusel dentro del modal */
+.modal-content.carousel-post-view .carousel-media-container {
+    position: relative;
+    width: 600px; /* Ancho fijo para ejemplo */
+    height: 600px; /* Alto fijo para ejemplo */
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.modal-content.carousel-post-view .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-content.carousel-post-view .carousel-item {
+    min-width: 100%; /* Cada imagen ocupa el 100% del contenedor */
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-content.carousel-post-view .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
     padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 24px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Visor de Historias/Reels (pantalla completa) */
+.modal-content.carousel-post-view .carousel-nav.prev {
+    left: 10px;
+}
+.modal-content.carousel-post-view .carousel-nav.next {
+    right: 10px;
+}
+
+.modal-content.carousel-post-view .carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 10;
+}
+
+.modal-content.carousel-post-view .carousel-indicators .indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.5);
+}
+
+.modal-content.carousel-post-view .carousel-indicators .indicator.active {
+    background-color: #fff;
+}
+
+/* --- Visor de Historias y Reels (Pantalla Completa) --- */
 #story-reel-viewer {
     position: fixed;
     top: 0;
@@ -80,81 +380,211 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1001; /* Mayor que el modal normal */
+    z-index: 2000; /* Mayor que el modal normal */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-.story-content, .reel-content {
+#story-reel-viewer:not(.hidden) {
+    opacity: 1;
+}
+
+.story-reel-content {
     width: 100%;
     height: 100%;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Para que el video no se salga */
+    overflow: hidden;
+    max-width: 400px; /* Ancho típico para historias/reels en móvil */
+    max-height: 100vh; /* Para pantallas de escritorio */
 }
 
-.story-media, .reel-media {
-    width: 100%; /* O auto, dependiendo del formato */
+.story-reel-media {
+    width: 100%;
     height: 100%;
-    object-fit: contain; /* Para que el video se ajuste sin cortar */
+    object-fit: contain; /* Ajusta el contenido sin recortar */
     background-color: black;
 }
 
-.story-header, .reel-overlay {
+.story-reel-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 10px;
     color: white;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     z-index: 10;
 }
 
-.story-header .user-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 8px;
+.story-reel-overlay .top-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
-.story-header .progress-bar-container {
-    display: flex;
-    width: 100%;
-    height: 3px;
-    background-color: rgba(255,255,255,0.3);
-    margin-bottom: 10px;
-}
-.story-header .progress-segment {
+.story-reel-overlay .progress-bar-container {
     flex-grow: 1;
-    background-color: #fff;
-    margin-right: 2px;
+    display: flex;
+    gap: 3px;
+    margin-right: 10px;
+}
+
+.story-reel-overlay .progress-segment {
+    flex-grow: 1;
+    height: 3px;
+    background-color: rgba(255,255,255,0.4);
     border-radius: 2px;
 }
 
-.story-actions, .reel-actions-right {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
+.story-reel-overlay .progress-segment.active {
+    background-color: #fff;
+}
+
+.story-reel-overlay .user-info {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    margin-right: auto; /* Empuja el botón cerrar a la derecha */
+}
+
+.story-reel-overlay .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+.story-reel-overlay .username {
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.story-reel-overlay .time-elapsed {
+    font-size: 0.9em;
+    color: rgba(255,255,255,0.8);
+}
+
+.story-reel-overlay .close-btn {
+    background: none;
+    border: none;
+    font-size: 30px;
     color: white;
-    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.story-reel-overlay .bottom-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.story-reel-overlay .message-input {
+    flex-grow: 1;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 25px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 0.95em;
+    margin-right: 10px;
+}
+
+.story-reel-overlay .message-input::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+.story-reel-overlay .message-input:focus {
+    outline: none;
+    border-color: white;
+}
+
+.story-reel-overlay .action-icon {
+    font-size: 26px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+/* Acciones para Reels (verticales a la derecha) */
+.reel-actions-vertical {
+    position: absolute;
+    right: 15px;
+    bottom: 80px; /* Sobre la barra de mensaje */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: white;
+    text-align: center;
+    font-size: 14px;
     z-index: 10;
 }
 
-/* Estilos de iconos (usar librerías como Font Awesome o SVG) */
-.icon-heart, .icon-comment, .icon-share, .icon-save, .icon-music, .icon-emoji {
-    font-size: 24px;
-    margin: 0 8px;
+.reel-actions-vertical .action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     cursor: pointer;
-    /* Para simular Font Awesome, en producción deberías usar la librería */
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    background-color: #ccc; /* Solo como marcador de posición */
-    border-radius: 4px;
+}
+
+.reel-actions-vertical .action-item i {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+/* Info del reel abajo a la izquierda */
+.reel-info-bottom-left {
+    position: absolute;
+    bottom: 80px; /* Sobre la barra de mensaje */
+    left: 15px;
+    color: white;
+    z-index: 10;
+}
+
+.reel-info-bottom-left p {
+    margin: 0;
+}
+
+.reel-info-bottom-left .username-reel {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.reel-info-bottom-left .reel-caption {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.reel-info-bottom-left .reel-audio {
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+}
+
+.reel-info-bottom-left .reel-audio i {
+    margin-right: 5px;
+}
+
+/* Áreas de navegación para historias (clic a los lados) */
+.story-nav-area {
+    position: absolute;
+    top: 0;
+    width: 40%;
+    height: 100%;
+    z-index: 15; /* Sobre el contenido, bajo el overlay */
+    cursor: pointer;
+}
+
+.story-nav-area.left {
+    left: 0;
+}
+
+.story-nav-area.right {
+    right: 0;
 }
