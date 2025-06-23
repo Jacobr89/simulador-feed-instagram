@@ -1,33 +1,16 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Feed de Instagram</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23E1306C' d='M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.149-4.771-1.691-4.919-4.919-.058-1.265-.07-1.644-.07-4.85s.012-3.585.07-4.85c.149-3.227 1.664-4.771 4.919-4.919 1.265-.058 1.644-.07 4.85-.07zm0-2.163C8.768 0 8.381.011 7.151.071 3.549.231 1.458 2.308 1.29 5.922.235 9.141.223 9.516.223 13s.012 3.859.07 7.078c.148 3.614 2.23 5.705 5.844 5.864 3.227.058 3.617.07 7.078.07s3.859-.012 7.078-.07c3.612-.149 5.704-2.23 5.863-5.844.058-3.227.07-3.617.07-7.078s-.012-3.859-.07-7.078c-.149-3.612-2.23-5.704-5.844-5.863-3.227-.058-3.617-.07-7.078-.07zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 2.162a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm6.571-5.638a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z'/%3E%3C/svg%3E">
-</head>
-<body>
-    <div class="instagram-container">
-        <div class="instagram-header">
-            <span id="headerTitle" class="header-title">Instagram Feed Simulador</span>
-            <div class="header-buttons" id="editModeButtons">
-                <input type="file" id="imageUpload" multiple accept="image/*" style="display: none;">
-                <label for="imageUpload" class="action-button upload-button">Subir Fotos</label>
-                <button id="generateLink" class="action-button generate-button">Compartir Feed</button>
+<div id="app-container">
+    <header>...</header>
+    <main id="feed-container">
+        <div class="post-card" data-post-type="feed" data-post-id="123">...</div>
+        <div class="post-card" data-post-type="carousel" data-post-id="124">...</div>
+        </main>
+    <footer>...</footer>
+
+    <div id="modal-overlay" class="hidden">
+        <div id="post-modal" class="modal-content">
             </div>
-             <span id="viewModeIndicator" class="view-mode-indicator" style="display: none;">Modo Previsualización</span>
-        </div>
+    </div>
 
-        <div class="instagram-feed" id="instagramFeed">
-            <p id="noPostsMessage" class="message">
-                Sube tus fotos para empezar a simular tu feed de Instagram.
-            </p>
+    <div id="story-reel-viewer" class="hidden">
         </div>
-
-        <div class="instagram-footer">
-            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJDb21pZW56byIgb2ZjdXN0YWJsZT0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0xMS45OTkgOWwyLjczNiAyLjczNmExIDEgMCAwIDEtLjY4MyAxLjYzOWwtMi4wNjItLjUxOGExIDEgMCAwIDAtMS4xMjYuNzY2bC0uNTE4IDIuMDYyYTEgMSAwIDAgMS0xLjYzOS0uNjgzbDIuNzM2LTIuNzM2YTEgMSAwIDAgMC0uMDA1LTEuMzg5TDguNCA4LjRhMSAxIDAgMCAxIDEuMzg4LS4wMDVMOC40IDguNEE3LjUgNy41IDAgMSAxIDEyIDcuNWExIDEgMCAwIDAgLjAwMS0yQTIuNSA1LjUgMCAwIDAgMTIgMy41YTkgOSAwIDEgMCAwIDE4LjVhOSA5IDAgMCAwIDkuMDAxLTlsLS4wMDItLjAwMi4wMDMtLjAwM2ExIDEgMCAwIDAtLjA0My0xLjk2OC43NTcuNzU3IDAgMCAxLS4yOTgtLjQ2N2E1LjUgNS41IDAgMCAwLTMuODYxLTguMDMyQTcuNTQ1IDcuNTQ1IDAgMCAwIDguNCAxLjVBOS4wMDMgOS4wMDMgMCAwIDAgNi42NDMgMi41NTNBOS4wMTMgOS4wMTMgMCAwIDAgMyA3LjVBNy41IDcuNSAwIDAgMSA4LjQgMjJhNy40ODQgNy44NDQgMCAwIDEtMi42NTMtLjM3NkE5IDkgMCAwIDAgMTIgMjJhOSA5IDAgMCAwIDkuMDA1LTkuMDA1eiIgZmlsbD0iIzI2MjYyNiI+PC9wYXRoPjwvc3ZnPg==" alt="Home" class="footer-icon">
-            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJCdXNjYXIiIG9mY3VzdGFibGU9InRydWUiIHJvbGU9ImltZyIgZGF0YS1qaWlkPSJfMzAxMDA2MTUwNzIiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE2LjcwNyAxNS4yOTNhMSAxIDAgMCAxLTEuNDE0IDEuNDE0bC0zLjU2MS0zLjU2LTQuMjQzIDQuMjQzbC0xLjQxNC0xLjQxNGw0LjI0My00LjI0M2wtMy41NjEtMy41NjJhMSAxIDAg1IDEgMS40MTQtMS40MTRsMy41NjEgMy41NjFsNC4yNDMtNC4yNDNsMS40MTQgMS40MTRsLTQuMjQzIDQuMjQzTDE3LjcwNyAxNS4yOTN6TTE4IDEwY40uNDE4IDAgOCAzLjU4MiA4IDhzLTMuNTgyIDgtOCA4LTgtMy41ODItOC04IDMuNTgyLTgtOCA4eiIgZmlsbD0iIzI2MjYyNiI+PC9wYXRoPjwvc3ZnPg==" alt="Search" class="footer-icon">
-            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJQbHVzIiBvZmN1c3RhYmxlPSJ0cnVlIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDEuNzVMNC43NSA1Ljk4djcuNzc4YTYgNiAwIDAgMCA2LjY2NSA1Ljk4NUwxMiAxOS43MDhsLjU4NS0uMDE1QTYgNiAwIDAgMCAxOS4yNSAxMy43NTdWMi41NTJMMTYuMjUyIDEuNzg1eiIgZmlsbD0iIzI2MjYyNiI+PC9wYXRoPjwvc3ZnPg==" alt="Add" class="footer-icon">
-            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJDb3Jhem9uIiBvZmN1c3RhYmxlPSJ0cnVlIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTE2LjMgMy4xYy0xLjUzIDAtMy4wNjEuNzYzLTQuMyAxLjk3OS0xLjI0LTEuMjE1LTIuNzctMS45NzktNC4zLTEuOTc5LTQuNzcgMC03LjcgMy4xOTMtNy43IDcuNDI5IDAgMi44MTMgMi4yOTYgNS43MzcgNS4zMTIgOC4xOTMgMi40MTcgMS45NDcgNC44NTMgMy45MDkgNi45MzYgNS40NDMuMDkuMDY5LjE3OC4xMy4yNjQuMTgyLjg5LS51NzUgMS44NS0xLjIwMiAyLjg3OC0xLjgyM2MzLjMyNS0yLjI5MiA2LjIxMi01LjcyMiA2LjU1My04LjYxNS4yNzUtMi4zMjMuMTIyLTQuODctMS4yMTItNi44LS41OTItLjgxMi0xLjQ0OC0xLjQ2LTIuNDMzLTEuODc5LTIuMzgyLS44NS00Ljg5NS0uNjg2LTcuNzMzLTEuNjg2eiIgZmlsbD0iIzI2MjYyNiI+PC9wYXRoPjwvc3ZnPg==" alt="Likes" class="footer-icon">
-            <img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWxhYmVsPSJQZXJmaWwiIG9mY3VzdGFibGU9InRydWUiIHJvbGU9ImltZyIgZGF0YS
+</div>
