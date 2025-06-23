@@ -3,48 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Clone Preview</title>
+    <title>Insimu | Tu Instagram Simulado</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" type="image/png">
 </head>
 <body>
     <div id="app-container">
         <header class="app-header">
-            <h1>Instagram Clone</h1>
-            </header>
-        <main id="feed-container" class="feed-grid">
-            <div class="post-card" data-post-type="feed" data-post-id="post1">
-                <img src="https://via.placeholder.com/300x300/F0F0F0/000000?text=Feed+Post+1" alt="Publicación de Feed">
+            <div class="header-left">
+                <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735ce558bceb.png" alt="Insimu Logo" class="instagram-logo">
             </div>
-            <div class="post-card" data-post-type="carousel" data-post-id="post2">
-                <img src="https://via.placeholder.com/300x300/E0E0E0/000000?text=Carrusel+1" alt="Publicación de Carrusel">
-                <i class="fas fa-images carousel-indicator-icon"></i>
+            <div class="header-center">
+                <select id="account-selector" class="account-selector">
+                    </select>
+                <button id="add-account-btn" class="add-account-btn"><i class="fas fa-plus"></i></button>
             </div>
-            <div class="post-card" data-post-type="feed" data-post-id="post3">
-                <img src="https://via.placeholder.com/300x300/D0D0D0/000000?text=Feed+Post+2" alt="Publicación de Feed">
-            </div>
-            <div class="post-card story-card" data-post-type="story" data-post-id="story1">
-                <div class="story-avatar-wrapper">
-                    <img src="https://via.placeholder.com/80x80/C0C0C0/000000?text=Historia" alt="Historia">
+            <div class="header-right">
+                <button id="new-post-btn" class="new-post-btn"><i class="fas fa-plus-square"></i></button>
                 </div>
-                <span>Tu Historia</span>
-            </div>
-            <div class="post-card" data-post-type="reel" data-post-id="reel1">
-                <img src="https://via.placeholder.com/300x500/B0B0B0/000000?text=Reel+1" alt="Publicación de Reel">
-                <i class="fas fa-video reel-indicator-icon"></i>
-            </div>
-            <div class="post-card" data-post-type="feed" data-post-id="post4">
-                <img src="https://via.placeholder.com/300x300/A0A0A0/000000?text=Feed+Post+3" alt="Publicación de Feed">
-            </div>
+        </header>
+
+        <main id="main-content">
+            <section id="stories-section" class="stories-section">
+                </section>
+
+            <section id="feed-container" class="feed-grid">
+                </section>
         </main>
 
         <div id="modal-overlay" class="hidden">
-            <div id="post-modal" class="modal-content">
-                </div>
+            <div id="post-modal" class="modal-content"></div>
         </div>
 
-        <div id="story-reel-viewer" class="hidden">
+        <div id="story-reel-viewer" class="hidden"></div>
+
+        <div id="create-post-overlay" class="hidden">
+            <div id="create-post-modal" class="create-post-modal">
+                <div class="modal-header">
+                    <h2>Crear Nueva Publicación</h2>
+                    <button class="close-btn" onclick="closeCreatePostModal()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="post-type-selector">
+                        <button class="type-btn active" data-type="feed">Feed</button>
+                        <button class="type-btn" data-type="carousel">Carrusel</button>
+                        <button class="type-btn" data-type="story">Historia</button>
+                        <button class="type-btn" data-type="reel">Reel</button>
+                    </div>
+
+                    <div id="media-upload-section" class="media-upload-section">
+                        <label for="media-input" class="upload-area">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p>Arrastra tus fotos/videos aquí o haz clic para seleccionar</p>
+                            <input type="file" id="media-input" accept="image/*,video/*" multiple class="hidden">
+                        </label>
+                        <div id="media-preview-container" class="media-preview-container"></div>
+                    </div>
+
+                    <textarea id="post-caption" placeholder="Escribe tu leyenda..." class="post-caption"></textarea>
+                    <button id="publish-post-btn" class="publish-post-btn">Publicar</button>
+                </div>
             </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
