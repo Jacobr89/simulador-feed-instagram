@@ -9,23 +9,23 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Alinear arriba para que el app-container no esté centrado verticalmente */
+    align-items: flex-start;
     min-height: 100vh;
-    background-color: #f0f2f5; /* Fondo más claro para la app */
-    font-size: 14px; /* Tamaño de fuente por defecto */
-    color: #262626;
+    background-color: #1A1A1A; /* Fondo muy oscuro para el body */
+    font-size: 14px;
+    color: #FAFAFA; /* Texto principal claro */
 }
 
 #app-container {
     display: flex;
-    flex-direction: column; /* La cabecera arriba, luego el main-layout */
+    flex-direction: column;
     width: 100%;
-    max-width: 1200px; /* Ancho máximo para la aplicación Planoly-like */
+    max-width: 1200px;
     min-height: 100vh;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px; /* Bordes redondeados para la app */
-    overflow: hidden; /* Asegurar que no se desborde el contenido */
+    background-color: #262626; /* Fondo oscuro para el contenedor principal */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 /* Header */
@@ -34,9 +34,9 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    border-bottom: 1px solid #dbdbdb;
-    background-color: #fff;
-    z-index: 100; /* Asegurar que esté por encima */
+    border-bottom: 1px solid #363636; /* Borde más oscuro */
+    background-color: #262626; /* Fondo del header oscuro */
+    z-index: 100;
 }
 
 .app-header .header-left {
@@ -47,44 +47,46 @@ body {
 
 .app-header .instagram-logo {
     height: 30px;
+    filter: invert(1); /* Para logos que originalmente son negros, los invierte a blanco para el dark mode */
     object-fit: contain;
 }
 
 .app-header .app-title {
     font-size: 1.5em;
     font-weight: 700;
-    color: #262626;
+    color: #FAFAFA; /* Título claro */
 }
 
-.app-header .header-icon { /* Reutilizamos esta clase para el botón de añadir medios */
+.app-header .header-icon {
     background: none;
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #262626;
+    color: #FAFAFA; /* Iconos claros */
     padding: 5px;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 .app-header .header-icon:hover {
     transform: scale(1.1);
+    color: #0095F6; /* Color de acento al pasar el ratón */
 }
 
 /* Layout Principal (Sidebar + Content) */
 .main-layout {
     display: flex;
-    flex-grow: 1; /* Para que ocupe el espacio restante */
+    flex-grow: 1;
 }
 
 /* Sidebar */
 #sidebar {
     width: 250px;
     min-width: 200px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #dbdbdb;
+    background-color: #1A1A1A; /* Fondo de la barra lateral muy oscuro */
+    border-right: 1px solid #363636;
     padding: 20px 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Empujar el selector de cuenta al final */
+    justify-content: space-between;
 }
 
 #sidebar ul {
@@ -96,7 +98,7 @@ body {
 #sidebar li {
     padding: 12px 20px;
     font-size: 1.1em;
-    color: #555;
+    color: #FAFAFA; /* Texto de ítems claro */
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -105,21 +107,21 @@ body {
 }
 
 #sidebar li:hover {
-    background-color: #e9ecef;
-    color: #000;
+    background-color: #363636; /* Fondo oscuro al pasar el ratón */
+    color: #FAFAFA;
 }
 
 #sidebar li.active {
-    background-color: #e0e7ff; /* Color de selección */
-    color: #007bff; /* Color de texto para activo */
+    background-color: #0095F6; /* Color de acento para el ítem activo */
+    color: #FFFFFF; /* Texto blanco para el ítem activo */
     font-weight: 600;
-    border-left: 4px solid #007bff; /* Indicador visual de activo */
-    padding-left: 16px; /* Ajuste para el borde */
+    border-left: 4px solid #0095F6; /* Borde del mismo color de acento */
+    padding-left: 16px;
 }
 
 #sidebar .sidebar-bottom {
     padding: 20px;
-    border-top: 1px solid #dbdbdb;
+    border-top: 1px solid #363636;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -128,13 +130,14 @@ body {
 #sidebar .account-selector {
     width: 100%;
     padding: 8px 10px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid #363636;
     border-radius: 5px;
     font-size: 1em;
-    background-color: #fff;
+    background-color: #262626; /* Fondo del selector oscuro */
+    color: #FAFAFA; /* Texto del selector claro */
     cursor: pointer;
     appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.4L146.2%20208.6%205.4%2069.4h281.6z%22%2F%3E%3C%2Fsvg%3E');
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FAFAFA%22%20d%3D%22M287%2069.4L146.2%20208.6%205.4%2069.4h281.6z%22%2F%3E%3C%2Fsvg%3E'); /* Icono blanco para el dropdown */
     background-repeat: no-repeat;
     background-position: right 8px top 50%;
     background-size: 12px auto;
@@ -142,7 +145,7 @@ body {
 }
 
 #sidebar .add-account-btn {
-    background-color: #007bff;
+    background-color: #0095F6; /* Botón con color de acento */
     color: white;
     border: none;
     border-radius: 5px;
@@ -156,23 +159,22 @@ body {
     gap: 5px;
 }
 #sidebar .add-account-btn:hover {
-    background-color: #0056b3;
+    background-color: #007acb; /* Tono más oscuro al pasar el ratón */
 }
-
 
 /* Main Content Area */
 #main-content-area {
-    flex-grow: 1; /* Ocupa todo el espacio restante */
+    flex-grow: 1;
     padding: 20px;
-    background-color: #fff;
-    overflow-y: auto; /* Scroll si el contenido es largo */
+    background-color: #262626; /* Fondo del área principal oscuro */
+    overflow-y: auto;
 }
 
 .main-view h2 {
     font-size: 1.8em;
-    color: #333;
+    color: #FAFAFA; /* Títulos claros */
     margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #363636; /* Borde de sección oscuro */
     padding-bottom: 10px;
 }
 
@@ -183,7 +185,7 @@ body {
 
 .empty-state {
     text-align: center;
-    color: #888;
+    color: #8E8E8E; /* Texto gris para estados vacíos */
     margin-top: 50px;
     font-size: 1.1em;
 }
@@ -201,18 +203,22 @@ body {
     background: none;
     border: none;
     font-size: 1.5em;
-    color: #555;
+    color: #FAFAFA; /* Botones de navegación claros */
     cursor: pointer;
+    transition: color 0.2s ease;
+}
+#calendar-controls button:hover {
+    color: #0095F6; /* Color de acento al pasar el ratón */
 }
 
 #current-month-year {
     font-size: 1.8em;
     font-weight: 600;
-    color: #333;
+    color: #FAFAFA; /* Texto del mes/año claro */
 }
 
 .calendar-grid-container {
-    border: 1px solid #e0e0e0;
+    border: 1px solid #363636; /* Borde oscuro para la cuadrícula */
     border-radius: 8px;
     overflow: hidden;
 }
@@ -220,27 +226,26 @@ body {
 .calendar-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #e0e0e0;
+    background-color: #1A1A1A; /* Fondo del encabezado de días muy oscuro */
+    border-bottom: 1px solid #363636;
 }
 
 .calendar-header span {
     text-align: center;
     padding: 10px 0;
     font-weight: 600;
-    color: #777;
+    color: #8E8E8E; /* Días de la semana en gris */
     font-size: 0.9em;
 }
 
 .calendar-days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    /* Puedes ajustar el alto mínimo de las filas aquí si es necesario */
 }
 
 .calendar-day {
-    min-height: 120px; /* Alto mínimo para cada día */
-    border: 1px solid #eee;
+    min-height: 120px;
+    border: 1px solid #363636; /* Bordes de días oscuros */
     border-top: none;
     border-left: none;
     padding: 5px;
@@ -249,59 +254,62 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 5px;
-    overflow: hidden; /* Para ocultar publicaciones que se desborden */
-    background-color: #fff;
+    overflow: hidden;
+    background-color: #262626; /* Fondo de días oscuro */
     transition: background-color 0.2s ease;
 }
 
-.calendar-day:nth-child(7n) { /* Último día de la semana */
+.calendar-day:nth-child(7n) {
     border-right: none;
 }
-.calendar-day:nth-last-child(-n+7) { /* Última fila de días */
+.calendar-day:nth-last-child(-n+7) {
     border-bottom: none;
 }
 
-
 .calendar-day.inactive-month {
-    background-color: #fafafa;
-    color: #ccc;
+    background-color: #1A1A1A; /* Fondo más oscuro para días fuera del mes */
+    color: #555; /* Texto más tenue */
 }
 
 .calendar-day.current-day {
-    background-color: #e6f7ff; /* Resaltar el día actual */
-    border: 1px solid #91d5ff;
+    background-color: #0095F6; /* Fondo del día actual con color de acento */
+    border: 1px solid #007acb;
+    color: white; /* Texto del día actual blanco */
+}
+.calendar-day.current-day .calendar-day-number {
+    color: white;
 }
 
-.calendar-day.drag-over { /* Estilo visual al arrastrar sobre un día */
-    background-color: #d1e7ff;
-    border-color: #007bff;
+.calendar-day.drag-over {
+    background-color: #007acb; /* Tono más oscuro del acento al arrastrar */
+    border-color: #0095F6;
 }
 
 .calendar-day-number {
     font-weight: 600;
     font-size: 1.1em;
-    color: #333;
-    align-self: flex-start; /* Alinear el número a la izquierda arriba */
+    color: #FAFAFA; /* Números de día claros */
+    align-self: flex-start;
     padding: 5px 5px 0 5px;
 }
 
 .calendar-day.inactive-month .calendar-day-number {
-    color: #ccc;
+    color: #555;
 }
 
 .calendar-post-thumbnail {
-    width: 80px; /* Tamaño de las miniaturas en el calendario */
+    width: 80px;
     height: 80px;
     object-fit: cover;
     border-radius: 4px;
     cursor: pointer;
-    border: 1px solid #eee;
+    border: 1px solid #363636; /* Borde oscuro para miniaturas */
     position: relative;
-    z-index: 1; /* Asegurar que estén sobre el fondo del día */
+    z-index: 1;
 }
 
 .calendar-post-thumbnail.scheduled {
-    border: 2px solid #007bff; /* Borde azul para programadas */
+    border: 2px solid #0095F6; /* Borde azul para programadas */
 }
 .calendar-post-thumbnail.posted {
     border: 2px solid #28a745; /* Borde verde para publicadas */
@@ -310,7 +318,6 @@ body {
     border: 2px solid #ffc107; /* Borde amarillo para borradores */
 }
 
-/* Indicadores de tipo en las miniaturas del calendario */
 .calendar-post-thumbnail .post-type-icon {
     position: absolute;
     top: 3px;
@@ -336,18 +343,18 @@ body {
 .media-item {
     width: 100%;
     height: 150px;
-    background-color: #f0f0f0;
+    background-color: #1A1A1A; /* Fondo del ítem de medios muy oscuro */
     border-radius: 8px;
     overflow: hidden;
     position: relative;
-    cursor: grab; /* Cursor de arrastre */
-    border: 1px solid #e0e0e0;
+    cursor: grab;
+    border: 1px solid #363636; /* Borde oscuro */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .media-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .media-item img, .media-item video {
@@ -370,14 +377,14 @@ body {
     justify-content: center;
 }
 
-/* --- MODAL PARA SUBIR MEDIOS (anteriormente create-post-overlay) --- */
+/* --- MODAL PARA SUBIR MEDIOS --- */
 #upload-media-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8); /* Overlay más oscuro */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -391,11 +398,11 @@ body {
 }
 
 .upload-media-modal {
-    background-color: #fff;
+    background-color: #262626; /* Fondo del modal oscuro */
     border-radius: 12px;
     width: 90%;
     max-width: 500px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6); /* Sombra más oscura */
     transform: scale(0.9);
     transition: transform 0.3s ease-in-out;
     display: flex;
@@ -412,14 +419,14 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 1px solid #363636; /* Borde oscuro */
 }
 
 .upload-media-modal .modal-header h2 {
     margin: 0;
     font-size: 1.2em;
     font-weight: 600;
-    color: #262626;
+    color: #FAFAFA; /* Título claro */
 }
 
 .upload-media-modal .close-btn {
@@ -427,7 +434,7 @@ body {
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #8e8e8e;
+    color: #8E8E8E; /* Icono de cerrar gris */
 }
 
 .upload-media-modal .modal-body {
@@ -441,33 +448,33 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px dashed #dbdbdb;
+    border: 2px dashed #363636; /* Borde punteado oscuro */
     border-radius: 8px;
     padding: 30px;
     cursor: pointer;
-    background-color: #fafafa;
+    background-color: #1A1A1A; /* Fondo del área de carga muy oscuro */
     text-align: center;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .upload-area:hover {
-    background-color: #f0f0f0;
-    border-color: #8e8e8e;
+    background-color: #262626; /* Fondo más claro al pasar el ratón */
+    border-color: #8E8E8E;
 }
 
 .upload-area .upload-icon {
     font-size: 60px;
-    color: #8e8e8e;
+    color: #8E8E8E; /* Icono gris */
     margin-bottom: 15px;
 }
 
 .upload-area p {
     margin: 0;
-    color: #8e8e8e;
+    color: #8E8E8E; /* Texto gris */
     font-size: 0.9em;
 }
 
-.media-preview-container { /* Reutilizado para las previsualizaciones de medios seleccionados */
+.media-preview-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
@@ -478,13 +485,13 @@ body {
     position: relative;
     width: 100px;
     height: 100px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid #363636; /* Borde oscuro */
     border-radius: 8px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #eee;
+    background-color: #1A1A1A; /* Fondo muy oscuro */
 }
 
 .media-preview-item img,
@@ -511,9 +518,9 @@ body {
     cursor: pointer;
 }
 
-.publish-post-btn { /* Reutilizado para "Añadir a Biblioteca" y "Guardar Publicación" */
+.publish-post-btn {
     width: 100%;
-    background-color: #0095f6;
+    background-color: #0095F6; /* Color de acento */
     color: white;
     border: none;
     border-radius: 8px;
@@ -522,7 +529,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    margin-top: 20px; /* Espacio superior */
+    margin-top: 20px;
 }
 
 .publish-post-btn:hover {
@@ -536,11 +543,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 3001; /* Mayor que el modal de subir medios */
+    z-index: 3001;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
@@ -550,11 +557,11 @@ body {
 }
 
 .schedule-post-modal {
-    background-color: #fff;
+    background-color: #262626; /* Fondo del modal oscuro */
     border-radius: 12px;
     width: 90%;
-    max-width: 600px; /* Un poco más ancho */
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    max-width: 600px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
     transform: scale(0.9);
     transition: transform 0.3s ease-in-out;
     display: flex;
@@ -571,14 +578,14 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 1px solid #363636;
 }
 
 .schedule-post-modal .modal-header h2 {
     margin: 0;
     font-size: 1.2em;
     font-weight: 600;
-    color: #262626;
+    color: #FAFAFA;
 }
 
 .schedule-post-modal .close-btn {
@@ -586,7 +593,7 @@ body {
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: #8e8e8e;
+    color: #8E8E8E;
 }
 
 .schedule-post-modal .modal-body {
@@ -597,10 +604,10 @@ body {
 
 .schedule-post-modal .media-preview-section {
     margin-bottom: 20px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #363636; /* Borde oscuro */
     border-radius: 8px;
     padding: 10px;
-    background-color: #fafafa;
+    background-color: #1A1A1A; /* Fondo muy oscuro */
 }
 
 .schedule-post-modal .form-group {
@@ -611,18 +618,20 @@ body {
     display: block;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #555;
+    color: #FAFAFA; /* Labels claros */
 }
 
 .schedule-post-modal .form-group input,
 .schedule-post-modal .form-group select,
 .schedule-post-modal .form-group textarea {
-    width: calc(100% - 22px); /* Ajuste para padding/border */
+    width: calc(100% - 22px);
     padding: 10px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid #363636; /* Bordes de inputs oscuros */
     border-radius: 5px;
     font-size: 1em;
     box-sizing: border-box;
+    background-color: #1A1A1A; /* Fondo de inputs muy oscuro */
+    color: #FAFAFA; /* Texto de inputs claro */
 }
 
 .schedule-post-modal .form-group textarea {
@@ -631,7 +640,7 @@ body {
 }
 
 .schedule-post-modal .delete-btn {
-    background-color: #dc3545;
+    background-color: #DC3545; /* Rojo para eliminar */
     color: white;
     border: none;
     border-radius: 8px;
@@ -644,7 +653,481 @@ body {
     width: 100%;
 }
 .schedule-post-modal .delete-btn:hover {
-    background-color: #c82333;
+    background-color: #C82333;
 }
 
 /* --- ESTILOS PARA LA PREVISUALIZACIÓN DEL FEED DE INSTAGRAM --- */
+#feed-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    max-width: 935px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #1A1A1A; /* Fondo del grid muy oscuro */
+    border-radius: 8px;
+}
+
+.feed-preview-item {
+    width: 100%;
+    padding-bottom: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #262626; /* Fondo del ítem oscuro */
+    border: 1px solid #363636; /* Borde del ítem oscuro */
+    cursor: pointer;
+}
+
+.feed-preview-item img,
+.feed-preview-item video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.feed-preview-item .post-type-overlay-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: white;
+    background-color: rgba(0,0,0,0.5);
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    z-index: 10;
+}
+
+.feed-preview-item.scheduled-item,
+.feed-preview-item.draft-item {
+    border: 3px solid #0095F6; /* Borde azul para programadas/borradores */
+}
+
+.feed-preview-item.draft-item {
+    border-color: #FFC107; /* Borde amarillo para borradores */
+}
+
+.feed-preview-item .scheduled-date-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 0.8em;
+    padding: 5px;
+    text-align: center;
+    z-index: 10;
+}
+
+/* --- ESTILOS GENERALES DE MODALES --- */
+#modal-overlay, #story-reel-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Overlay más oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background-color: #262626; /* Fondo del contenido del modal oscuro */
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra más oscura */
+}
+
+.close-overlay-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 2001;
+}
+
+/* Estilos para el visor de historias/reels (pantalla completa) */
+#story-reel-viewer {
+    background-color: #000; /* Fondo negro puro */
+}
+
+.story-reel-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.story-reel-content video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.story-reel-content .story-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.1);
+}
+
+.story-reel-content .story-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.story-reel-content .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.story-reel-content .username {
+    color: white;
+    font-weight: 600;
+}
+
+.story-reel-content .timestamp {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9em;
+}
+
+.story-reel-content .story-progress-bars {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    display: flex;
+    gap: 3px;
+    width: calc(100% - 10px);
+    height: 3px;
+}
+
+.story-reel-content .progress-bar {
+    flex-grow: 1;
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.story-reel-content .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: white;
+}
+
+
+/* --- ESTILOS PARA LA VISTA DE PUBLICACIONES (el modal cuando haces clic en una publicación) --- */
+.feed-post-view {
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    min-height: 500px;
+    background-color: #262626; /* Fondo del modal oscuro */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.feed-post-media {
+    flex: 3;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+.feed-post-media img,
+.feed-post-media video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.feed-post-details {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #363636; /* Borde oscuro */
+    background-color: #262626;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #363636;
+}
+
+.post-header .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.post-header .username {
+    font-weight: 600;
+    color: #FAFAFA; /* Username claro */
+}
+
+.post-caption-comments {
+    flex-grow: 1;
+    padding: 16px;
+    overflow-y: auto;
+    color: #FAFAFA; /* Texto de captions y comentarios claro */
+}
+
+.post-caption {
+    margin-bottom: 10px;
+}
+
+.post-caption .username {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.post-comments .comment-item {
+    margin-bottom: 5px;
+}
+
+.post-comments .comment-item .username {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.post-actions {
+    padding: 6px 16px;
+    border-top: 1px solid #363636;
+}
+
+.post-actions .action-icons {
+    display: flex;
+    gap: 10px;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.post-actions .action-icons i {
+    cursor: pointer;
+    color: #FAFAFA; /* Iconos de acción claros */
+}
+
+.post-likes {
+    font-weight: 600;
+    font-size: 1em;
+    margin-bottom: 8px;
+    color: #FAFAFA;
+}
+
+.post-timestamp {
+    color: #8E8E8E; /* Timestamp gris */
+    font-size: 0.7em;
+    text-transform: uppercase;
+}
+
+.post-comment-input {
+    display: flex;
+    border-top: 1px solid #363636;
+    padding: 10px 16px;
+}
+
+.post-comment-input input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    padding: 8px 0;
+    background-color: #262626; /* Fondo de input oscuro */
+    color: #FAFAFA; /* Texto de input claro */
+}
+
+.post-comment-input button {
+    background: none;
+    border: none;
+    color: #0095F6; /* Botón Publicar con color de acento */
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 8px 0;
+}
+
+
+/* Carrusel de imágenes */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+}
+.carousel-image.active {
+    display: block;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1.5em;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 10;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: white;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    #app-container {
+        border-radius: 0;
+        min-height: 100vh;
+    }
+
+    .main-layout {
+        flex-direction: column;
+    }
+
+    #sidebar {
+        width: 100%;
+        min-width: unset;
+        border-right: none;
+        border-bottom: 1px solid #363636;
+        padding: 0;
+    }
+    #sidebar ul {
+        display: flex;
+        justify-content: space-around;
+    }
+    #sidebar li {
+        flex-grow: 1;
+        text-align: center;
+        padding: 10px 0;
+        gap: 0;
+        flex-direction: column;
+        font-size: 0.9em;
+    }
+    #sidebar li i {
+        margin-bottom: 5px;
+    }
+    #sidebar li.active {
+        border-left: none;
+        border-bottom: 4px solid #0095F6;
+        padding-bottom: 6px;
+        padding-left: 0;
+    }
+    #sidebar .sidebar-bottom {
+        display: none;
+    }
+
+    #main-content-area {
+        padding: 10px;
+    }
+
+    .feed-post-view {
+        flex-direction: column;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+
+    .feed-post-media {
+        min-height: 300px;
+    }
+
+    .post-header {
+        padding: 10px;
+    }
+
+    .post-caption-comments {
+        padding: 10px;
+    }
+
+    .post-actions, .post-comment-input {
+        padding: 8px 10px;
+    }
+
+    #modal-overlay, #story-reel-viewer {
+        align-items: stretch;
+        justify-content: stretch;
+    }
+    .close-overlay-btn {
+        top: 5px;
+        right: 5px;
+        font-size: 1.5em;
+    }
+}
+
+@media (min-width: 768px) {
+    #app-container {
+        border: 1px solid #363636; /* Borde sutil para desktop */
+    }
+}
