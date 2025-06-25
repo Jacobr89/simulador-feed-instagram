@@ -3,49 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insimu Planner - Tu Planificador de Instagram</title>
-    <link rel="icon" href="https://static.cdninstagram.com/rsrc.php/yS/r/EOlB3LR9Ew_.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Insimu Planner - Tu Planificador de Contenido</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="app-container">
         <header class="app-header">
             <div class="header-left">
-                <img src="https://static.cdninstagram.com/rsrc.php/v3/yS/r/y5sgz4_G0Yt.png" alt="Insimu Logo" class="instagram-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo" class="instagram-logo">
                 <span class="app-title">Insimu Planner</span>
             </div>
             <div class="header-right">
-                <button id="add-media-to-library-btn" class="header-icon"><i class="fas fa-plus"></i></button>
+                <button id="add-publication-btn" class="header-icon" title="Agregar Publicación">
+                    <i class="fas fa-plus-square"></i>
+                </button>
+                <button id="upload-media-btn-header" class="header-icon" title="Subir Medios">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </button>
+                <button id="notifications-btn" class="header-icon" title="Notificaciones">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button id="settings-btn" class="header-icon" title="Configuración">
+                    <i class="fas fa-cog"></i>
+                </button>
             </div>
         </header>
 
         <div class="main-layout">
-            <nav id="sidebar">
+            <aside id="sidebar">
                 <ul>
-                    <li data-view="calendar-view" class="active"><i class="fas fa-calendar-alt"></i> Planificar</li>
-                    <li data-view="media-library-view"><i class="fas fa-images"></i> Medios</li>
-                    <li data-view="instagram-feed-preview"><i class="fab fa-instagram"></i> Previsualización IG</li>
-                    <li data-view="analytics-report-view"><i class="fas fa-chart-line"></i> Analíticas</li>
+                    <li id="nav-calendar" class="active"><i class="fas fa-calendar-alt"></i> Calendario</li>
+                    <li id="nav-media-library"><i class="fas fa-photo-video"></i> Biblioteca de Medios</li>
+                    <li id="nav-feed-preview"><i class="fas fa-th"></i> Previsualizar Feed</li>
+                    <li id="nav-analytics"><i class="fas fa-chart-line"></i> Analíticas</li>
+                    <li id="nav-direct-messages"><i class="fas fa-inbox"></i> Mensajes Directos</li>
                 </ul>
                 <div class="sidebar-bottom">
                     <select id="account-selector" class="account-selector">
-                        </select>
-                    <button id="add-account-btn" class="add-account-btn"><i class="fas fa-user-plus"></i></button>
+                        <option value="account1">@usuario_insimu_1</option>
+                        <option value="account2">@cuenta_secundaria</option>
+                    </select>
+                    <button class="add-account-btn"><i class="fas fa-user-plus"></i> Añadir Cuenta</button>
                 </div>
-            </nav>
+            </aside>
 
             <main id="main-content-area">
                 <section id="calendar-view" class="main-view">
-                    <h2>Planificador de Publicaciones</h2>
+                    <h2>Calendario de Publicaciones</h2>
                     <div id="calendar-controls">
                         <button id="prev-month-btn"><i class="fas fa-chevron-left"></i></button>
                         <span id="current-month-year"></span>
                         <button id="next-month-btn"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div id="calendar-grid-container">
+                    <div class="calendar-grid-container">
                         <div class="calendar-header">
-                            <span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span>
+                            <span>Dom</span>
+                            <span>Lun</span>
+                            <span>Mar</span>
+                            <span>Mié</span>
+                            <span>Jue</span>
+                            <span>Vie</span>
+                            <span>Sáb</span>
                         </div>
                         <div id="calendar-days-grid" class="calendar-days-grid">
                             </div>
@@ -54,94 +73,135 @@
 
                 <section id="media-library-view" class="main-view hidden">
                     <h2>Biblioteca de Medios</h2>
-                    <div id="media-grid" class="media-grid">
+                    <div class="media-grid" id="media-grid">
+                        <div class="empty-state" id="media-library-empty-state">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 50px; margin-bottom: 10px;"></i>
+                            <p>Sube tus primeras fotos y videos para empezar a planificar.</p>
                         </div>
+                    </div>
                 </section>
 
-                <section id="instagram-feed-preview" class="main-view hidden">
-                    <h2>Previsualización de tu Feed de Instagram</h2>
-                    <div id="feed-preview-grid" class="feed-grid">
+                <section id="feed-preview-view" class="main-view hidden">
+                    <h2>Previsualización del Feed</h2>
+                    <div id="feed-preview-grid">
+                        <div class="empty-state" id="feed-preview-empty-state">
+                            <i class="fas fa-th" style="font-size: 50px; margin-bottom: 10px;"></i>
+                            <p>Programa algunas publicaciones para ver tu feed aquí.</p>
                         </div>
+                    </div>
                 </section>
 
-                <section id="analytics-report-view" class="main-view hidden">
-                    <h2>Analíticas (Simuladas)</h2>
-                    <div id="report-data">
-                        </div>
+                <section id="analytics-view" class="main-view hidden">
+                    <h2>Analíticas de Instagram</h2>
+                    <div class="empty-state">
+                        <i class="fas fa-chart-line" style="font-size: 50px; margin-bottom: 10px;"></i>
+                        <p>Aquí verás tus estadísticas de rendimiento.</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">(Funcionalidad en desarrollo)</p>
+                    </div>
                 </section>
+
+                <section id="direct-messages-view" class="main-view hidden">
+                    <h2>Mensajes Directos</h2>
+                    <div class="empty-state">
+                        <i class="fas fa-inbox" style="font-size: 50px; margin-bottom: 10px;"></i>
+                        <p>Gestiona tus mensajes directos aquí.</p>
+                        <p style="font-size: 0.9em; margin-top: 10px;">(Funcionalidad en desarrollo)</p>
+                    </div>
+                </section>
+
             </main>
         </div>
+    </div>
 
-        <div id="modal-overlay" class="hidden">
-            <button class="close-overlay-btn" onclick="closeView()"><i class="fas fa-times"></i></button>
-            <div id="post-modal" class="modal-content">
-                </div>
-        </div>
-
-        <div id="story-reel-viewer" class="hidden">
-            <button class="close-overlay-btn" onclick="closeView()"><i class="fas fa-times"></i></button>
+    <div id="upload-media-overlay" class="modal-overlay hidden">
+        <div class="upload-media-modal">
+            <div class="modal-header">
+                <h2>Subir Fotos y Videos</h2>
+                <button class="close-btn" id="close-upload-media-modal">&times;</button>
             </div>
-
-        <div id="upload-media-overlay" class="hidden">
-            <div id="upload-media-modal" class="upload-media-modal">
-                <div class="modal-header">
-                    <h2>Subir a Biblioteca de Medios</h2>
-                    <button class="close-btn" onclick="closeUploadMediaModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-body">
+                <div class="upload-area" id="drop-area">
+                    <input type="file" id="media-upload-input" multiple accept="image/*,video/*" class="hidden">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p>Arrastra y suelta tus archivos aquí, o haz clic para seleccionar.</p>
                 </div>
-                <div class="modal-body">
-                    <label for="media-input" class="upload-area">
-                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                        <p>Arrastra tus fotos/videos aquí o haz clic para seleccionar</p>
-                        <input type="file" id="media-input" accept="image/*,video/*" multiple class="hidden">
-                    </label>
-                    <div id="upload-media-preview-container" class="media-preview-container"></div>
-                    <button id="add-to-library-btn" class="publish-post-btn">Añadir a Biblioteca</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="schedule-post-overlay" class="hidden">
-            <div id="schedule-post-modal" class="schedule-post-modal">
-                <div class="modal-header">
-                    <h2 id="schedule-modal-title">Crear Publicación</h2>
-                    <button class="close-btn" onclick="closeSchedulePostModal()"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="modal-body">
-                    <div class="media-preview-section">
-                        <div id="scheduled-media-preview" class="media-preview-container">
-                            </div>
+                <div class="media-preview-container" id="media-preview-container">
                     </div>
-                    <div class="form-group">
-                        <label for="post-type-select">Tipo de Publicación:</label>
-                        <select id="post-type-select">
-                            <option value="feed">Feed</option>
-                            <option value="carousel">Carrusel</option>
-                            <option value="story">Historia</option>
-                            <option value="reel">Reel</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-date-input">Fecha y Hora de Programación:</label>
-                        <input type="datetime-local" id="schedule-date-input">
-                    </div>
-                    <div class="form-group">
-                        <label for="schedule-caption">Leyenda:</label>
-                        <textarea id="schedule-caption" placeholder="Escribe tu leyenda..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="post-status-select">Estado:</label>
-                        <select id="post-status-select">
-                            <option value="draft">Borrador</option>
-                            <option value="scheduled">Programado</option>
-                            <option value="posted">Publicado</option>
-                        </select>
-                    </div>
-                    <button id="save-scheduled-post-btn" class="publish-post-btn">Guardar Publicación</button>
-                    <button id="delete-scheduled-post-btn" class="delete-btn hidden">Eliminar Publicación</button>
-                </div>
+                <button id="upload-media-confirm-btn" class="publish-post-btn" disabled>Subir Medios</button>
             </div>
         </div>
     </div>
+
+    <div id="schedule-post-overlay" class="modal-overlay hidden">
+        <div class="schedule-post-modal">
+            <div class="modal-header">
+                <h2 id="schedule-post-modal-title">Programar Publicación</h2>
+                <button class="close-btn" id="close-schedule-post-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="media-preview-section">
+                    <label>Medios seleccionados:</label>
+                    <div class="media-preview-container" id="schedule-media-preview-container">
+                        </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-caption">Texto de la publicación:</label>
+                    <textarea id="post-caption" placeholder="Escribe el texto de tu publicación..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-date">Fecha de publicación:</label>
+                    <input type="date" id="post-date">
+                </div>
+
+                <div class="form-group">
+                    <label for="post-time">Hora de publicación:</label>
+                    <input type="time" id="post-time">
+                </div>
+
+                <div class="form-group">
+                    <label for="post-type">Tipo de publicación:</label>
+                    <select id="post-type">
+                        <option value="feed">Feed</option>
+                        <option value="reel">Reel</option>
+                        <option value="story">Historia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="post-status">Estado:</label>
+                    <select id="post-status">
+                        <option value="draft">Borrador</option>
+                        <option value="scheduled">Programada</option>
+                        <option value="posted">Publicada</option>
+                    </select>
+                </div>
+
+                <button id="save-post-btn" class="publish-post-btn">Guardar Publicación</button>
+                <button id="delete-post-btn" class="delete-btn hidden">Eliminar Publicación</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-post-overlay" class="modal-overlay hidden">
+        <button class="close-overlay-btn" id="close-view-post-modal">&times;</button>
+        <div class="modal-content feed-post-view" id="single-post-view">
+            </div>
+    </div>
+
+    <div id="story-reel-viewer" class="hidden">
+        <button class="close-overlay-btn" id="close-story-reel-viewer">&times;</button>
+        <div class="story-reel-content">
+            <div class="story-progress-bars"></div>
+            <div class="story-header">
+                <img src="" alt="User Avatar" class="user-avatar">
+                <span class="username"></span>
+                <span class="timestamp"></span>
+            </div>
+            </div>
+    </div>
+
 
     <script src="script.js"></script>
 </body>
