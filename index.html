@@ -3,205 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insimu Planner - Tu Planificador de Contenido</title>
+    <title>BrandIA: Centro de Mando de Campaña – Julio 2025</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div id="app-container">
-        <header class="app-header">
-            <div class="header-left">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo" class="instagram-logo">
-                <span class="app-title">Insimu Planner</span>
-            </div>
-            <div class="header-right">
-                <button id="add-publication-btn" class="header-icon" title="Agregar Publicación">
-                    <i class="fas fa-plus-square"></i>
-                </button>
-                <button id="upload-media-btn-header" class="header-icon" title="Subir Medios">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                </button>
-                <button id="notifications-btn" class="header-icon" title="Notificaciones">
-                    <i class="fas fa-bell"></i>
-                </button>
-                <button id="settings-btn" class="header-icon" title="Configuración">
-                    <i class="fas fa-cog"></i>
-                </button>
-            </div>
-        </header>
+    <header class="sticky-header">
+        <h1>BrandIA: Centro de Mando de Campaña – Julio 2025</h1>
+        <div class="header-info">
+            <span>ESTADO: <span class="status active-status">ACTIVO ✅</span></span>
+            <span>SEMANA EN CURSO: <span class="current-week">1 de 4</span></span>
+            <span>FECHA: 27 de junio de 2025</span>
+        </div>
+        <button id="exportPdfBtn" class="print-hidden">🖨️ Exportar Resumen Ejecutivo (PDF)</button>
+    </header>
 
-        <div class="main-layout">
-            <aside id="sidebar">
+    <main class="container">
+        <section class="module" id="module1">
+            <h2>MÓDULO 1: Directiva Estratégica <small>(El Porqué)</small></h2>
+            <div class="content-block concept">
+                <i class="fas fa-lightbulb icon"></i>
+                <p><strong>CONCEPTO CENTRAL:</strong> En julio, BrandIA es un ecosistema de crecimiento. Activamos nuestro portafolio y comunidad para una misión clave: <span class="keyword" data-metric="Tasa de conversión junio: 4.7%">conversión</span>, <span class="keyword" data-metric="Confianza de aliados mayo: 92%">confianza</span> y <span class="keyword" data-metric="Crecimiento MRR junio: +8%">crecimiento conjunto</span>.</p>
+            </div>
+            <div class="content-block objectives">
+                <i class="fas fa-bullseye icon"></i>
+                <h3>OBJETIVOS DE LA MISIÓN (KPIs Principales):</h3>
                 <ul>
-                    <li id="nav-calendar" class="active"><i class="fas fa-calendar-alt"></i> Calendario</li>
-                    <li id="nav-media-library"><i class="fas fa-photo-video"></i> Biblioteca de Medios</li>
-                    <li id="nav-feed-preview"><i class="fas fa-th"></i> Previsualizar Feed</li>
-                    <li id="nav-analytics"><i class="fas fa-chart-line"></i> Analíticas</li>
-                    <li id="nav-direct-messages"><i class="fas fa-inbox"></i> Mensajes Directos</li>
+                    <li><strong>+15%</strong> Aumento en leads B2B calificados.</li>
+                    <li><strong>+10%</strong> Crecimiento en alcance orgánico.</li>
+                    <li><strong>2</strong> Nuevos casos de éxito documentados.</li>
+                    <li><strong>95%</strong> Satisfacción de aliados comerciales.</li>
                 </ul>
-                <div class="sidebar-bottom">
-                    <select id="account-selector" class="account-selector">
-                        <option value="account1">@usuario_insimu_1</option>
-                        <option value="account2">@cuenta_secundaria</option>
-                    </select>
-                    <button class="add-account-btn"><i class="fas fa-user-plus"></i> Añadir Cuenta</button>
-                </div>
-            </aside>
-
-            <main id="main-content-area">
-                <section id="calendar-view" class="main-view">
-                    <h2>Calendario de Publicaciones</h2>
-                    <div id="calendar-controls">
-                        <button id="prev-month-btn"><i class="fas fa-chevron-left"></i></button>
-                        <span id="current-month-year"></span>
-                        <button id="next-month-btn"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="calendar-grid-container">
-                        <div class="calendar-header">
-                            <span>Dom</span>
-                            <span>Lun</span>
-                            <span>Mar</span>
-                            <span>Mié</span>
-                            <span>Jue</span>
-                            <span>Vie</span>
-                            <span>Sáb</span>
-                        </div>
-                        <div id="calendar-days-grid" class="calendar-days-grid">
-                            </div>
-                    </div>
-                </section>
-
-                <section id="media-library-view" class="main-view hidden">
-                    <h2>Biblioteca de Medios</h2>
-                    <div class="media-grid" id="media-grid">
-                        <div class="empty-state" id="media-library-empty-state">
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 50px; margin-bottom: 10px;"></i>
-                            <p>Sube tus primeras fotos y videos para empezar a planificar.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="feed-preview-view" class="main-view hidden">
-                    <h2>Previsualización del Feed</h2>
-                    <div id="feed-preview-grid">
-                        <div class="empty-state" id="feed-preview-empty-state">
-                            <i class="fas fa-th" style="font-size: 50px; margin-bottom: 10px;"></i>
-                            <p>Programa algunas publicaciones para ver tu feed aquí.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="analytics-view" class="main-view hidden">
-                    <h2>Analíticas de Instagram</h2>
-                    <div class="empty-state">
-                        <i class="fas fa-chart-line" style="font-size: 50px; margin-bottom: 10px;"></i>
-                        <p>Aquí verás tus estadísticas de rendimiento.</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">(Funcionalidad en desarrollo)</p>
-                    </div>
-                </section>
-
-                <section id="direct-messages-view" class="main-view hidden">
-                    <h2>Mensajes Directos</h2>
-                    <div class="empty-state">
-                        <i class="fas fa-inbox" style="font-size: 50px; margin-bottom: 10px;"></i>
-                        <p>Gestiona tus mensajes directos aquí.</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">(Funcionalidad en desarrollo)</p>
-                    </div>
-                </section>
-
-            </main>
-        </div>
-    </div>
-
-    <div id="upload-media-overlay" class="modal-overlay hidden">
-        <div class="upload-media-modal">
-            <div class="modal-header">
-                <h2>Subir Fotos y Videos</h2>
-                <button class="close-btn" id="close-upload-media-modal">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="upload-area" id="drop-area">
-                    <input type="file" id="media-upload-input" multiple accept="image/*,video/*" class="hidden">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <p>Arrastra y suelta tus archivos aquí, o haz clic para seleccionar.</p>
+        </section>
+
+        <hr>
+
+        <section class="module" id="module2">
+            <h2>MÓDULO 2: Arsenal Creativo <small>(El Qué y el Cómo)</small></h2>
+            <div class="content-block communication-pillars">
+                <i class="fas fa-ruler-combined icon"></i>
+                <h3>PILARES DE COMUNICACIÓN:</h3>
+                <div class="pilar-list">
+                    <span class="pilar" data-pilar="producto">PRODUCTO <small>(impulso)</small></span>
+                    <span class="pilar" data-pilar="comunidad">COMUNIDAD <small>(sinergia)</small></span>
+                    <span class="pilar" data-pilar="resultado">RESULTADO <small>(data)</small></span>
+                    <span class="pilar" data-pilar="conexion">CONEXIÓN <small>(humano)</small></span>
+                    <span class="pilar" data-pilar="cobertura">COBERTURA <small>(nacional)</small></span>
                 </div>
-                <div class="media-preview-container" id="media-preview-container">
-                    </div>
-                <button id="upload-media-confirm-btn" class="publish-post-btn" disabled>Subir Medios</button>
             </div>
-        </div>
-    </div>
-
-    <div id="schedule-post-overlay" class="modal-overlay hidden">
-        <div class="schedule-post-modal">
-            <div class="modal-header">
-                <h2 id="schedule-post-modal-title">Programar Publicación</h2>
-                <button class="close-btn" id="close-schedule-post-modal">&times;</button>
+            <div class="content-block impact-phrases">
+                <i class="fas fa-comments icon"></i>
+                <h3>FRASES DE IMPACTO (Cápsulas de Mensaje):</h3>
+                <ul>
+                    <li>
+                        "Si tu marca necesita acción, necesita a BrandIA."
+                        <button class="copy-btn" data-text="Si tu marca necesita acción, necesita a BrandIA."><i class="far fa-copy"></i></button>
+                    </li>
+                    <li>
+                        "Vendemos más que productos: generamos movimiento."
+                        <button class="copy-btn" data-text="Vendemos más que productos: generamos movimiento."><i class="far fa-copy"></i></button>
+                    </li>
+                    <li>
+                        "Conectamos producto con punto de venta real."
+                        <button class="copy-btn" data-text="Conectamos producto con punto de venta real."><i class="far fa-copy"></i></button>
+                    </li>
+                </ul>
             </div>
-            <div class="modal-body">
-                <div class="media-preview-section">
-                    <label>Medios seleccionados:</label>
-                    <div class="media-preview-container" id="schedule-media-preview-container">
-                        </div>
+            <div class="content-block channels-formats">
+                <i class="fas fa-mobile-alt icon"></i>
+                <h3>CANALES Y FORMATOS (Ecosistema de Contenido):</h3>
+                <p>Un mapa visual interactivo donde cada planeta es un canal (Instagram, LinkedIn, etc.) y sus lunas son los formatos (Reels, Carruseles, Stories). (Necesitarías un SVG o imagen con áreas clicables aquí)</p>
+                <div class="channel-grid">
+                    <div class="channel-item">Instagram <small>(Reels, Carruseles, Stories)</small></div>
+                    <div class="channel-item">LinkedIn <small>(Artículos, Publicaciones, Eventos)</small></div>
+                    <div class="channel-item">Blog <small>(Casos de Éxito, Guías)</small></div>
                 </div>
-
-                <div class="form-group">
-                    <label for="post-caption">Texto de la publicación:</label>
-                    <textarea id="post-caption" placeholder="Escribe el texto de tu publicación..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="post-date">Fecha de publicación:</label>
-                    <input type="date" id="post-date">
-                </div>
-
-                <div class="form-group">
-                    <label for="post-time">Hora de publicación:</label>
-                    <input type="time" id="post-time">
-                </div>
-
-                <div class="form-group">
-                    <label for="post-type">Tipo de publicación:</label>
-                    <select id="post-type">
-                        <option value="feed">Feed</option>
-                        <option value="reel">Reel</option>
-                        <option value="story">Historia</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="post-status">Estado:</label>
-                    <select id="post-status">
-                        <option value="draft">Borrador</option>
-                        <option value="scheduled">Programada</option>
-                        <option value="posted">Publicada</option>
-                    </select>
-                </div>
-
-                <button id="save-post-btn" class="publish-post-btn">Guardar Publicación</button>
-                <button id="delete-post-btn" class="delete-btn hidden">Eliminar Publicación</button>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div id="view-post-overlay" class="modal-overlay hidden">
-        <button class="close-overlay-btn" id="close-view-post-modal">&times;</button>
-        <div class="modal-content feed-post-view" id="single-post-view">
-            </div>
-    </div>
+        <hr>
 
-    <div id="story-reel-viewer" class="hidden">
-        <button class="close-overlay-btn" id="close-story-reel-viewer">&times;</button>
-        <div class="story-reel-content">
-            <div class="story-progress-bars"></div>
-            <div class="story-header">
-                <img src="" alt="User Avatar" class="user-avatar">
-                <span class="username"></span>
-                <span class="timestamp"></span>
+        <section class="module" id="module3">
+            <h2>MÓDULO 3: Línea de Tiempo Táctica <small>(El Cuándo)</small></h2>
+            <p class="web-only">Un cronograma visual tipo Gantt. La semana actual está resaltada. Cada tarea es un bloque en el que se puede hacer clic para ver los detalles.</p>
+            <div class="timeline">
+                <div class="week current-week-timeline" data-week="1">
+                    <h3>SEMANA 1: POSICIONAMIENTO DE PRODUCTO <span class="progress-bar-container"><span class="progress-bar" style="width: 35%;"></span></span> 35%</h3>
+                    <ul>
+                        <li class="task" data-detail="Detalles del lanzamiento de collage.">LUN: [POST] Lanzamiento collage de productos.</li>
+                        <li class="task" data-detail="Video corto destacando 3 beneficios clave.">MIÉ: [REEL] Beneficios clave de producto estrella.</li>
+                        <li class="task" data-detail="Cita clave para redes sociales.">VIE: [QUOTE] "Cuando tu producto entra a BrandIA, entra al país."</li>
+                    </ul>
+                </div>
+                <div class="week print-hidden" data-week="2">
+                    <h3>SEMANA 2: FUERZA DE LA COMUNIDAD <span class="progress-bar-container"><span class="progress-bar" style="width: 0%;"></span></span> 0%</h3>
+                    <ul>
+                        <li>LUN: [TESTIMONIO] Aliado destacado: foto + historia.</li>
+                        <li>JUE: [CARRUSEL] ¿Qué significa ser parte de BrandIA?</li>
+                        <li>VIE: [QUOTE] "Somos movimiento. Somos comunidad."</li>
+                    </ul>
+                </div>
+                <div class="week print-hidden" data-week="3">
+                    <h3>SEMANA 3: IMPULSO DE RESULTADOS <span class="progress-bar-container"><span class="progress-bar" style="width: 0%;"></span></span> 0%</h3>
+                    <ul>
+                        <li>LUN: [INFOGRAFÍA] Datos de crecimiento clave.</li>
+                        <li>MIÉ: [CASE STUDY] Nuevo caso de éxito.</li>
+                        <li>VIE: [POST] "¿Ya eres parte de nuestra red?"</li>
+                    </ul>
+                </div>
+                <div class="week print-hidden" data-week="4">
+                    <h3>SEMANA 4: CONEXIÓN Y COBERTURA <span class="progress-bar-container"><span class="progress-bar" style="width: 0%;"></span></span> 0%</h3>
+                    <ul>
+                        <li>LUN: [LIVE] Q&A con equipo BrandIA.</li>
+                        <li>JUE: [REEL] Detrás de cámaras de nuestra logística.</li>
+                        <li>VIE: [CARRUSEL] Cobertura nacional: mapa de aliados.</li>
+                    </ul>
+                </div>
             </div>
-            </div>
-    </div>
+            <p class="print-only timeline-summary">Semanas 2-4: Desarrollo de comunidad, resultados y expansión.</p>
+        </section>
 
+        <hr>
+
+        <section class="module" id="module4">
+            <h2>MÓDULO 4: Panel de Resultados <small>(El Scoreboard en Vivo)</small></h2>
+            <p class="web-only">Los números cambian de color (rojo, amarillo, verde) según si están por debajo, en línea o por encima del objetivo.</p>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>KPI Clave</th>
+                        <th>Objetivo Mensual</th>
+                        <th>Progreso Actual</th>
+                        <th>% Logrado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-objective="300000" data-current="85102">
+                        <td>Alcance Total</td>
+                        <td>300,000</td>
+                        <td class="progress-value">85,102</td>
+                        <td class="percentage">35%</td>
+                    </tr>
+                    <tr data-objective="50" data-current="18">
+                        <td>Leads Generados</td>
+                        <td>50</td>
+                        <td class="progress-value">18</td>
+                        <td class="percentage">36%</td>
+                    </tr>
+                    <tr data-objective="150" data-current="45">
+                        <td>Nuevos Seguidores B2B</td>
+                        <td>150</td>
+                        <td class="progress-value">45</td>
+                        <td class="percentage">30%</td>
+                    </tr>
+                    <tr data-objective="2500" data-current="980">
+                        <td>Clics en Enlace (Bio)</td>
+                        <td>2,500</td>
+                        <td class="progress-value">980</td>
+                        <td class="percentage">39%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="export-data-btn web-only">Exportar a Hojas de cálculo (CSV)</button>
+        </section>
+
+        <hr>
+
+        <section class="module" id="module5">
+            <h2>MÓDULO 5: Equipo de Misión y Recursos <small>(El Quién y las Herramientas)</small></h2>
+            <div class="content-block team-members">
+                <i class="fas fa-users icon"></i>
+                <h3>EQUIPO RESPONSABLE:</h3>
+                <ul>
+                    <li>Dirección Estratégica: Junta Directiva <span class="status-dot online print-hidden"></span><small class="web-only">(Online)</small></li>
+                    <li>Social Media: Lehuris Martínez <span class="status-dot online print-hidden"></span><small class="web-only">(Online)</small></li>
+                    <li>Contenido & Leads: Jacob Romero <span class="status-dot busy print-hidden"></span><small class="web-only">(En reunión)</small></li>
+                    <li>Diseño Visual: Andreina Coelo <span class="status-dot focused print-hidden"></span><small class="web-only">(Concentrada)</small></li>
+                </ul>
+            </div>
+            <div class="content-block toolbox">
+                <i class="fas fa-tools icon"></i>
+                <h3>TOOLBOX (Caja de Herramientas):</h3>
+                <ul>
+                    <li><a href="#" target="_blank">[Enlace] Banco de Imágenes y Logos</a></li>
+                    <li><a href="#" target="_blank">[Enlace] Plantillas de Stories</a></li>
+                    <li><a href="#" target="_blank">[Enlace] Guía de Tono y Voz de la Marca</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
