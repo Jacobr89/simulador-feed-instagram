@@ -1,1133 +1,661 @@
-/* Estilos Globales y Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* --- Estilos Generales y para la Web --- */
+:root {
+    --primary-dark: #222222; /* Negro muy oscuro para texto principal, iconos, etc. */
+    --secondary-dark: #444444; /* Gris oscuro para subtítulos, bordes más fuertes */
+    --light-gray: #F8F8F8; /* Gris claro para fondos de secciones, elementos suaves */
+    --medium-gray: #CCCCCC; /* Gris medio para bordes de tablas, líneas divisorias */
+    --white: #FFFFFF; /* Blanco para fondos de módulos, texto sobre oscuro */
+
+    /* Colores para estados (KPIs), ajustados para que destaquen sobre grises */
+    --status-success: #28a745; /* Verde para éxito/activo - Destaca */
+    --status-warning: #ffc107; /* Amarillo para advertencias/en línea - Destaca */
+    --status-danger: #dc3545; /* Rojo para alertas/bajo - Destaca */
+
+    --text-color: var(--primary-dark);
+    --bg-color: var(--light-gray);
+    --module-bg: var(--white);
+    --border-color: var(--medium-gray);
+    --header-bg: var(--light-gray);
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    background-color: #1A1A1A; /* Fondo muy oscuro para el body */
-    font-size: 14px;
-    color: #FAFAFA; /* Texto principal claro */
-}
-
-#app-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 1200px;
-    min-height: 100vh;
-    background-color: #262626; /* Fondo oscuro para el contenedor principal */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* Header */
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    border-bottom: 1px solid #363636; /* Borde más oscuro */
-    background-color: #262626; /* Fondo del header oscuro */
-    z-index: 100;
-}
-
-.app-header .header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.app-header .instagram-logo {
-    height: 30px;
-    filter: invert(1); /* Para logos que originalmente son negros, los invierte a blanco para el dark mode */
-    object-fit: contain;
-}
-
-.app-header .app-title {
-    font-size: 1.5em;
-    font-weight: 700;
-    color: #FAFAFA; /* Título claro */
-}
-
-.app-header .header-icon {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #FAFAFA; /* Iconos claros */
-    padding: 5px;
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-.app-header .header-icon:hover {
-    transform: scale(1.1);
-    color: #0095F6; /* Color de acento al pasar el ratón */
-}
-
-/* Layout Principal (Sidebar + Content) */
-.main-layout {
-    display: flex;
-    flex-grow: 1;
-}
-
-/* Sidebar */
-#sidebar {
-    width: 250px;
-    min-width: 200px;
-    background-color: #1A1A1A; /* Fondo de la barra lateral muy oscuro */
-    border-right: 1px solid #363636;
-    padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-#sidebar ul {
-    list-style: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
     padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.sticky-header {
+    background-color: var(--header-bg);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.sticky-header h1 {
     margin: 0;
-}
-
-#sidebar li {
-    padding: 12px 20px;
-    font-size: 1.1em;
-    color: #FAFAFA; /* Texto de ítems claro */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-#sidebar li:hover {
-    background-color: #363636; /* Fondo oscuro al pasar el ratón */
-    color: #FAFAFA;
-}
-
-#sidebar li.active {
-    background-color: #0095F6; /* Color de acento para el ítem activo */
-    color: #FFFFFF; /* Texto blanco para el ítem activo */
-    font-weight: 600;
-    border-left: 4px solid #0095F6; /* Borde del mismo color de acento */
-    padding-left: 16px;
-}
-
-#sidebar .sidebar-bottom {
-    padding: 20px;
-    border-top: 1px solid #363636;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#sidebar .account-selector {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #363636;
-    border-radius: 5px;
-    font-size: 1em;
-    background-color: #262626; /* Fondo del selector oscuro */
-    color: #FAFAFA; /* Texto del selector claro */
-    cursor: pointer;
-    appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FAFAFA%22%20d%3D%22M287%2069.4L146.2%20208.6%205.4%2069.4h281.6z%22%2F%3E%3C%2Fsvg%3E'); /* Icono blanco para el dropdown */
-    background-repeat: no-repeat;
-    background-position: right 8px top 50%;
-    background-size: 12px auto;
-    padding-right: 25px;
-}
-
-#sidebar .add-account-btn {
-    background-color: #0095F6; /* Botón con color de acento */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-}
-#sidebar .add-account-btn:hover {
-    background-color: #007acb; /* Tono más oscuro al pasar el ratón */
-}
-
-/* Main Content Area */
-#main-content-area {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #262626; /* Fondo del área principal oscuro */
-    overflow-y: auto;
-}
-
-.main-view h2 {
-    font-size: 1.8em;
-    color: #FAFAFA; /* Títulos claros */
-    margin-bottom: 20px;
-    border-bottom: 1px solid #363636; /* Borde de sección oscuro */
-    padding-bottom: 10px;
-}
-
-/* Clases de utilidad */
-.hidden {
-    display: none !important;
-}
-
-.empty-state {
-    text-align: center;
-    color: #8E8E8E; /* Texto gris para estados vacíos */
-    margin-top: 50px;
-    font-size: 1.1em;
-}
-
-/* --- CALENDARIO --- */
-#calendar-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-#calendar-controls button {
-    background: none;
-    border: none;
     font-size: 1.5em;
-    color: #FAFAFA; /* Botones de navegación claros */
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-#calendar-controls button:hover {
-    color: #0095F6; /* Color de acento al pasar el ratón */
+    color: var(--primary-dark);
 }
 
-#current-month-year {
+.header-info span {
+    margin-left: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: var(--secondary-dark); /* Información secundaria en gris oscuro */
+}
+
+.status.active-status {
+    color: var(--status-success); /* El estado ACTIVO usa el color de éxito */
+}
+
+.module {
+    background-color: var(--module-bg);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.module h2 {
+    color: var(--primary-dark); /* Títulos de módulo en negro */
     font-size: 1.8em;
-    font-weight: 600;
-    color: #FAFAFA; /* Texto del mes/año claro */
-}
-
-.calendar-grid-container {
-    border: 1px solid #363636; /* Borde oscuro para la cuadrícula */
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.calendar-header {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    background-color: #1A1A1A; /* Fondo del encabezado de días muy oscuro */
-    border-bottom: 1px solid #363636;
-}
-
-.calendar-header span {
-    text-align: center;
-    padding: 10px 0;
-    font-weight: 600;
-    color: #8E8E8E; /* Días de la semana en gris */
-    font-size: 0.9em;
-}
-
-.calendar-days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-}
-
-.calendar-day {
-    min-height: 120px;
-    border: 1px solid #363636; /* Bordes de días oscuros */
-    border-top: none;
-    border-left: none;
-    padding: 5px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    overflow: hidden;
-    background-color: #262626; /* Fondo de días oscuro */
-    transition: background-color 0.2s ease;
-}
-
-.calendar-day:nth-child(7n) {
-    border-right: none;
-}
-.calendar-day:nth-last-child(-n+7) {
-    border-bottom: none;
-}
-
-.calendar-day.inactive-month {
-    background-color: #1A1A1A; /* Fondo más oscuro para días fuera del mes */
-    color: #555; /* Texto más tenue */
-}
-
-.calendar-day.current-day {
-    background-color: #0095F6; /* Fondo del día actual con color de acento */
-    border: 1px solid #007acb;
-    color: white; /* Texto del día actual blanco */
-}
-.calendar-day.current-day .calendar-day-number {
-    color: white;
-}
-
-.calendar-day.drag-over {
-    background-color: #007acb; /* Tono más oscuro del acento al arrastrar */
-    border-color: #0095F6;
-}
-
-.calendar-day-number {
-    font-weight: 600;
-    font-size: 1.1em;
-    color: #FAFAFA; /* Números de día claros */
-    align-self: flex-start;
-    padding: 5px 5px 0 5px;
-}
-
-.calendar-day.inactive-month .calendar-day-number {
-    color: #555;
-}
-
-.calendar-post-thumbnail {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #363636; /* Borde oscuro para miniaturas */
-    position: relative;
-    z-index: 1;
-}
-
-.calendar-post-thumbnail.scheduled {
-    border: 2px solid #0095F6; /* Borde azul para programadas */
-}
-.calendar-post-thumbnail.posted {
-    border: 2px solid #28a745; /* Borde verde para publicadas */
-}
-.calendar-post-thumbnail.draft {
-    border: 2px solid #ffc107; /* Borde amarillo para borradores */
-}
-
-.calendar-post-thumbnail .post-type-icon {
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    color: white;
-    background-color: rgba(0,0,0,0.6);
-    border-radius: 3px;
-    padding: 2px 4px;
-    font-size: 0.7em;
+    margin-top: 0;
+    border-bottom: 2px solid var(--secondary-dark); /* Línea divisoria en gris oscuro */
+    padding-bottom: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
-}
-
-/* --- BIBLIOTECA DE MEDIOS --- */
-.media-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    padding: 10px;
-}
-
-.media-item {
-    width: 100%;
-    height: 150px;
-    background-color: #1A1A1A; /* Fondo del ítem de medios muy oscuro */
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    cursor: grab;
-    border: 1px solid #363636; /* Borde oscuro */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.media-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.media-item img, .media-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.media-item .media-type-icon {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(0,0,0,0.6);
-    color: white;
-    padding: 3px 6px;
-    border-radius: 4px;
-    font-size: 0.8em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* --- MODAL PARA SUBIR MEDIOS --- */
-#upload-media-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Overlay más oscuro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 3000;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-#upload-media-overlay:not(.hidden) {
-    opacity: 1;
-}
-
-.upload-media-modal {
-    background-color: #262626; /* Fondo del modal oscuro */
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6); /* Sombra más oscura */
-    transform: scale(0.9);
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh;
-}
-
-#upload-media-overlay:not(.hidden) .upload-media-modal {
-    transform: scale(1);
-}
-
-.upload-media-modal .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #363636; /* Borde oscuro */
-}
-
-.upload-media-modal .modal-header h2 {
-    margin: 0;
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #FAFAFA; /* Título claro */
-}
-
-.upload-media-modal .close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #8E8E8E; /* Icono de cerrar gris */
-}
-
-.upload-media-modal .modal-body {
-    padding: 20px;
-    flex-grow: 1;
-    overflow-y: auto;
-}
-
-.upload-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed #363636; /* Borde punteado oscuro */
-    border-radius: 8px;
-    padding: 30px;
-    cursor: pointer;
-    background-color: #1A1A1A; /* Fondo del área de carga muy oscuro */
-    text-align: center;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.upload-area:hover {
-    background-color: #262626; /* Fondo más claro al pasar el ratón */
-    border-color: #8E8E8E;
-}
-
-.upload-area .upload-icon {
-    font-size: 60px;
-    color: #8E8E8E; /* Icono gris */
-    margin-bottom: 15px;
-}
-
-.upload-area p {
-    margin: 0;
-    color: #8E8E8E; /* Texto gris */
-    font-size: 0.9em;
-}
-
-.media-preview-container {
-    display: flex;
-    flex-wrap: wrap;
     gap: 10px;
-    margin-top: 15px;
 }
 
-.media-preview-item {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border: 1px solid #363636; /* Borde oscuro */
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #1A1A1A; /* Fondo muy oscuro */
+.module h2 small {
+    font-size: 0.6em;
+    opacity: 0.7;
+    color: var(--secondary-dark);
 }
 
-.media-preview-item img,
-.media-preview-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.media-preview-item .remove-media-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(0,0,0,0.6);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.8em;
-    cursor: pointer;
-}
-
-.publish-post-btn {
-    width: 100%;
-    background-color: #0095F6; /* Color de acento */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1.1em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    margin-top: 20px;
-}
-
-.publish-post-btn:hover {
-    background-color: #007acb;
-}
-
-/* --- MODAL PARA CREAR/EDITAR PUBLICACIÓN PROGRAMADA --- */
-#schedule-post-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 3001;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-#schedule-post-overlay:not(.hidden) {
-    opacity: 1;
-}
-
-.schedule-post-modal {
-    background-color: #262626; /* Fondo del modal oscuro */
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    transform: scale(0.9);
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh;
-}
-
-#schedule-post-overlay:not(.hidden) .schedule-post-modal {
-    transform: scale(1);
-}
-
-.schedule-post-modal .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #363636;
-}
-
-.schedule-post-modal .modal-header h2 {
-    margin: 0;
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #FAFAFA;
-}
-
-.schedule-post-modal .close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #8E8E8E;
-}
-
-.schedule-post-modal .modal-body {
-    padding: 20px;
-    flex-grow: 1;
-    overflow-y: auto;
-}
-
-.schedule-post-modal .media-preview-section {
+.content-block {
     margin-bottom: 20px;
-    border: 1px solid #363636; /* Borde oscuro */
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #1A1A1A; /* Fondo muy oscuro */
-}
-
-.schedule-post-modal .form-group {
-    margin-bottom: 15px;
-}
-
-.schedule-post-modal .form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    color: #FAFAFA; /* Labels claros */
-}
-
-.schedule-post-modal .form-group input,
-.schedule-post-modal .form-group select,
-.schedule-post-modal .form-group textarea {
-    width: calc(100% - 22px);
-    padding: 10px;
-    border: 1px solid #363636; /* Bordes de inputs oscuros */
+    padding: 15px;
+    background-color: var(--light-gray); /* Fondo gris claro para bloques de contenido */
     border-radius: 5px;
-    font-size: 1em;
-    box-sizing: border-box;
-    background-color: #1A1A1A; /* Fondo de inputs muy oscuro */
-    color: #FAFAFA; /* Texto de inputs claro */
-}
-
-.schedule-post-modal .form-group textarea {
-    min-height: 80px;
-    resize: vertical;
-}
-
-.schedule-post-modal .delete-btn {
-    background-color: #DC3545; /* Rojo para eliminar */
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1.1em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    margin-top: 10px;
-    width: 100%;
-}
-.schedule-post-modal .delete-btn:hover {
-    background-color: #C82333;
-}
-
-/* --- ESTILOS PARA LA PREVISUALIZACIÓN DEL FEED DE INSTAGRAM --- */
-#feed-preview-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    max-width: 935px;
-    margin: 0 auto;
-    padding: 10px;
-    background-color: #1A1A1A; /* Fondo del grid muy oscuro */
-    border-radius: 8px;
-}
-
-.feed-preview-item {
-    width: 100%;
-    padding-bottom: 100%;
-    position: relative;
-    overflow: hidden;
-    background-color: #262626; /* Fondo del ítem oscuro */
-    border: 1px solid #363636; /* Borde del ítem oscuro */
-    cursor: pointer;
-}
-
-.feed-preview-item img,
-.feed-preview-item video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.feed-preview-item .post-type-overlay-icon {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    color: white;
-    background-color: rgba(0,0,0,0.5);
-    padding: 4px 6px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    z-index: 10;
-}
-
-.feed-preview-item.scheduled-item,
-.feed-preview-item.draft-item {
-    border: 3px solid #0095F6; /* Borde azul para programadas/borradores */
-}
-
-.feed-preview-item.draft-item {
-    border-color: #FFC107; /* Borde amarillo para borradores */
-}
-
-.feed-preview-item .scheduled-date-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    font-size: 0.8em;
-    padding: 5px;
-    text-align: center;
-    z-index: 10;
-}
-
-/* --- ESTILOS GENERALES DE MODALES --- */
-#modal-overlay, #story-reel-viewer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Overlay más oscuro */
+    border: 1px solid var(--medium-gray); /* Borde en gris medio */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
+    gap: 15px;
+    align-items: flex-start;
 }
 
-.modal-content {
-    background-color: #262626; /* Fondo del contenido del modal oscuro */
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    max-width: 90%;
-    max-height: 90%;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra más oscura */
+.content-block .icon {
+    font-size: 1.8em;
+    color: var(--primary-dark); /* Iconos en negro */
+    flex-shrink: 0;
 }
 
-.close-overlay-btn {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 2em;
-    cursor: pointer;
-    z-index: 2001;
-}
-
-/* Estilos para el visor de historias/reels (pantalla completa) */
-#story-reel-viewer {
-    background-color: #000; /* Fondo negro puro */
-}
-
-.story-reel-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.story-reel-content video {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-.story-reel-content .story-controls {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: rgba(0,0,0,0.1);
-}
-
-.story-reel-content .story-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.story-reel-content .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.story-reel-content .username {
-    color: white;
-    font-weight: 600;
-}
-
-.story-reel-content .timestamp {
-    color: rgba(255,255,255,0.7);
-    font-size: 0.9em;
-}
-
-.story-reel-content .story-progress-bars {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    display: flex;
-    gap: 3px;
-    width: calc(100% - 10px);
-    height: 3px;
-}
-
-.story-reel-content .progress-bar {
-    flex-grow: 1;
-    background-color: rgba(255,255,255,0.5);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.story-reel-content .progress-bar-fill {
-    height: 100%;
-    width: 0%;
-    background-color: white;
-}
-
-
-/* --- ESTILOS PARA LA VISTA DE PUBLICACIONES (el modal cuando haces clic en una publicación) --- */
-.feed-post-view {
-    display: flex;
-    width: 100%;
-    max-width: 900px;
-    min-height: 500px;
-    background-color: #262626; /* Fondo del modal oscuro */
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.feed-post-media {
-    flex: 3;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-}
-
-.feed-post-media img,
-.feed-post-media video {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-.feed-post-details {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    border-left: 1px solid #363636; /* Borde oscuro */
-    background-color: #262626;
-}
-
-.post-header {
-    display: flex;
-    align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid #363636;
-}
-
-.post-header .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 12px;
-    object-fit: cover;
-}
-
-.post-header .username {
-    font-weight: 600;
-    color: #FAFAFA; /* Username claro */
-}
-
-.post-caption-comments {
-    flex-grow: 1;
-    padding: 16px;
-    overflow-y: auto;
-    color: #FAFAFA; /* Texto de captions y comentarios claro */
-}
-
-.post-caption {
+.content-block h3 {
+    color: var(--secondary-dark); /* Subtítulos en gris oscuro */
+    font-size: 1.3em;
+    margin-top: 0;
     margin-bottom: 10px;
 }
 
-.post-caption .username {
-    font-weight: 600;
-    margin-right: 5px;
+.content-block ul {
+    list-style: none;
+    padding: 0;
 }
 
-.post-comments .comment-item {
-    margin-bottom: 5px;
-}
-
-.post-comments .comment-item .username {
-    font-weight: 600;
-    margin-right: 5px;
-}
-
-.post-actions {
-    padding: 6px 16px;
-    border-top: 1px solid #363636;
-}
-
-.post-actions .action-icons {
-    display: flex;
-    gap: 10px;
-    font-size: 24px;
+.content-block ul li {
     margin-bottom: 8px;
+    padding-left: 10px;
+    position: relative;
 }
 
-.post-actions .action-icons i {
+.content-block ul li::before {
+    content: '•';
+    color: var(--primary-dark); /* Viñetas en negro */
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* --- Módulo 1: Directiva Estratégica --- */
+.keyword {
+    font-weight: bold;
+    color: var(--primary-dark); /* Palabras clave en negro */
     cursor: pointer;
-    color: #FAFAFA; /* Iconos de acción claros */
+    position: relative;
+    border-bottom: 1px dashed var(--secondary-dark); /* Subrayado en gris oscuro */
 }
 
-.post-likes {
-    font-weight: 600;
-    font-size: 1em;
-    margin-bottom: 8px;
-    color: #FAFAFA;
+.keyword .tooltip {
+    background-color: var(--secondary-dark); /* Fondo del tooltip en gris oscuro */
+    color: var(--white); /* Texto del tooltip en blanco */
+    /* ... otros estilos se mantienen ... */
 }
 
-.post-timestamp {
-    color: #8E8E8E; /* Timestamp gris */
-    font-size: 0.7em;
-    text-transform: uppercase;
+.keyword .tooltip::after {
+    border-color: var(--secondary-dark) transparent transparent transparent; /* Flecha del tooltip */
 }
 
-.post-comment-input {
+/* --- Módulo 2: Arsenal Creativo --- */
+.pilar-list {
     display: flex;
-    border-top: 1px solid #363636;
-    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.post-comment-input input {
-    flex-grow: 1;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    padding: 8px 0;
-    background-color: #262626; /* Fondo de input oscuro */
-    color: #FAFAFA; /* Texto de input claro */
+.pilar {
+    background-color: var(--primary-dark); /* Fondo del pilar en negro */
+    color: var(--white); /* Texto del pilar en blanco */
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.9em;
+    font-weight: bold;
 }
 
-.post-comment-input button {
+.pilar:hover {
+    background-color: var(--secondary-dark); /* Gris oscuro al pasar el ratón */
+}
+
+.impact-phrases ul {
+    list-style: none;
+    padding: 0;
+}
+
+.impact-phrases li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--white); /* Fondo blanco para cada frase */
+    border: 1px solid var(--medium-gray); /* Borde en gris medio */
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    font-style: italic;
+    font-size: 0.95em;
+    color: var(--secondary-dark); /* Texto de frase en gris oscuro */
+}
+
+.copy-btn {
     background: none;
     border: none;
-    color: #0095F6; /* Botón Publicar con color de acento */
-    font-weight: 600;
+    color: var(--secondary-dark); /* Botón de copiar en gris oscuro */
     cursor: pointer;
+    font-size: 1.1em;
     margin-left: 10px;
-    padding: 8px 0;
+    transition: color 0.2s ease;
 }
 
+.copy-btn:hover {
+    color: var(--primary-dark); /* Negro al pasar el ratón */
+}
 
-/* Carrusel de imágenes */
-.carousel-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
+.channel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.channel-item {
+    background-color: var(--white); /* Fondo blanco para item de canal */
+    border: 1px solid var(--medium-gray); /* Borde en gris medio */
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: var(--primary-dark); /* Texto principal en negro */
+}
+
+.channel-item small {
+    display: block;
+    font-weight: normal;
+    font-size: 0.85em;
+    margin-top: 5px;
+    color: var(--secondary-dark); /* Texto secundario en gris oscuro */
+}
+
+/* --- Módulo 3: Línea de Tiempo Táctica --- */
+.timeline {
+    margin-top: 20px;
+}
+
+.week {
+    background-color: var(--light-gray); /* Fondo gris claro para semana */
+    border-left: 5px solid var(--primary-dark); /* Borde en negro */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.week h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--primary-dark); /* Título de semana en negro */
+    font-size: 1.2em;
     display: flex;
-    justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
-.carousel-image {
-    width: 100%;
+.progress-bar-container {
+    flex-grow: 1;
+    height: 10px;
+    background-color: var(--medium-gray); /* Fondo de barra de progreso en gris medio */
+    border-radius: 5px;
+    overflow: hidden;
+    margin-left: auto;
+}
+
+.progress-bar {
+    display: block;
     height: 100%;
-    object-fit: contain;
+    background-color: var(--primary-dark); /* Barra de progreso en negro */
+    border-radius: 5px;
+}
+
+.week ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.week li {
+    background-color: var(--white); /* Fondo blanco para cada tarea */
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--medium-gray); /* Borde en gris medio */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: var(--secondary-dark); /* Texto de tarea en gris oscuro */
+}
+
+.week li::before {
+    content: attr(data-day);
+    font-weight: bold;
+    color: var(--primary-dark); /* Día de la semana en negro */
+    min-width: 30px;
+}
+
+.current-week-timeline {
+    border-color: var(--primary-dark); /* Borde de semana actual en negro */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra suave para destacar */
+}
+
+.print-only {
     display: none;
 }
-.carousel-image.active {
+
+.web-only {
     display: block;
 }
 
-.carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 50%;
-    font-size: 1.5em;
-    z-index: 10;
+/* --- Módulo 4: Panel de Resultados --- */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.results-table th, .results-table td {
+    padding: 12px 15px;
+    border: 1px solid var(--medium-gray); /* Bordes de tabla en gris medio */
+}
+
+.results-table th {
+    background-color: var(--primary-dark); /* Encabezado de tabla en negro */
+    color: var(--white); /* Texto de encabezado en blanco */
+    font-weight: bold;
+}
+
+.results-table tbody tr:nth-child(even) {
+    background-color: var(--light-gray); /* Filas pares en gris claro */
+}
+
+.results-table td.percentage {
+    font-weight: bold;
+}
+
+/* Colores dinámicos para el progreso (mantienen los colores de estado para impacto) */
+.color-red { color: var(--status-danger); }
+.color-yellow { color: var(--status-warning); }
+.color-green { color: var(--status-success); }
+
+/* --- Módulo 5: Equipo y Recursos --- */
+.team-members ul li {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 35px;
-    height: 35px;
-}
-
-.carousel-button.prev {
-    left: 10px;
-}
-
-.carousel-button.next {
-    right: 10px;
-}
-
-.carousel-dots {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 5px;
-    z-index: 10;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
+    gap: 8px;
     cursor: pointer;
+    color: var(--primary-dark); /* Nombres de equipo en negro */
 }
 
-.dot.active {
-    background-color: white;
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.status-dot.online { background-color: var(--status-success); }
+.status-dot.busy { background-color: var(--status-danger); }
+.status-dot.focused { background-color: var(--status-warning); }
+
+.toolbox ul li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Media Queries para Responsividad */
+.toolbox ul li a {
+    color: var(--secondary-dark); /* Enlaces de toolbox en gris oscuro */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.toolbox ul li a:hover {
+    text-decoration: underline;
+    color: var(--primary-dark); /* Negro al pasar el ratón */
+}
+
+hr {
+    border: none;
+    border-top: 1px dashed var(--medium-gray); /* Líneas divisorias en gris medio */
+    margin: 40px auto;
+    width: 80%;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+    background-color: var(--primary-dark); /* Botones en negro */
+    color: var(--white); /* Texto de botón en blanco */
+}
+
+button:hover {
+    background-color: var(--secondary-dark); /* Gris oscuro al pasar el ratón */
+}
+
+/* --- Media Queries para responsividad (Básico) --- */
 @media (max-width: 768px) {
-    #app-container {
-        border-radius: 0;
-        min-height: 100vh;
-    }
-
-    .main-layout {
+    .sticky-header {
         flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
-
-    #sidebar {
+    .header-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .header-info span {
+        margin-left: 0;
+    }
+    .module {
+        padding: 15px;
+    }
+    .module h2 {
+        font-size: 1.5em;
+    }
+    .content-block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .content-block .icon {
+        margin-bottom: 10px;
+    }
+    .pilar-list {
+        flex-direction: column;
         width: 100%;
-        min-width: unset;
-        border-right: none;
-        border-bottom: 1px solid #363636;
-        padding: 0;
     }
-    #sidebar ul {
-        display: flex;
-        justify-content: space-around;
-    }
-    #sidebar li {
-        flex-grow: 1;
+    .pilar {
+        width: calc(100% - 30px);
         text-align: center;
+    }
+}
+
+
+/* --- Estilos para IMPRESIÓN (PDF de 1 página) --- */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--white); /* Asegura fondo blanco para impresión */
+        color: var(--primary-dark); /* Texto general en negro */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* Ocultar elementos no deseados en la impresión */
+    .sticky-header,
+    .print-hidden,
+    .web-only,
+    hr,
+    .export-data-btn,
+    .copy-btn,
+    .tooltip,
+    .status-dot,
+    small.web-only {
+        display: none !important;
+    }
+
+    .print-only {
+        display: block !important;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 1cm;
+        box-shadow: none;
+    }
+
+    .module {
+        margin-bottom: 15px;
         padding: 10px 0;
-        gap: 0;
-        flex-direction: column;
-        font-size: 0.9em;
+        box-shadow: none;
+        border-bottom: 1px solid var(--medium-gray); /* Separador simple en gris medio */
+        border-radius: 0;
     }
-    #sidebar li i {
-        margin-bottom: 5px;
+
+    .module:last-of-type {
+        border-bottom: none;
     }
-    #sidebar li.active {
-        border-left: none;
-        border-bottom: 4px solid #0095F6;
-        padding-bottom: 6px;
-        padding-left: 0;
+
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--primary-dark) !important; /* Asegura texto negro para encabezados */
+        background: none !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
-    #sidebar .sidebar-bottom {
+    .module h2 {
+        font-size: 1.3em;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--secondary-dark); /* Línea en gris oscuro */
+    }
+    .module h2 small {
         display: none;
     }
 
-    #main-content-area {
-        padding: 10px;
+    .content-block {
+        padding: 5px 0;
+        border: none;
+        background: none;
+        gap: 5px;
+    }
+    .content-block .icon {
+        font-size: 1.2em;
+        color: var(--secondary-dark) !important; /* Iconos en gris oscuro */
     }
 
-    .feed-post-view {
-        flex-direction: column;
-        max-width: 100%;
-        max-height: 100%;
+    /* Ajustes específicos para que quepa en 1 página */
+    .header-info {
+        display: block !important;
+        text-align: right;
+        font-size: 0.8em;
+    }
+    .sticky-header h1 {
+        font-size: 1.2em;
+    }
+    .sticky-header {
+        position: static;
+        display: block;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--medium-gray);
+    }
+
+    /* Módulo 1 */
+    .concept p, .objectives ul {
+        font-size: 0.85em;
+    }
+    .concept p strong {
+        font-weight: normal;
+    }
+
+    /* Módulo 2 */
+    .pilar-list {
+        gap: 5px;
+    }
+    .pilar {
+        padding: 5px 10px;
+        border-radius: 10px;
+        font-size: 0.8em;
+        background-color: var(--light-gray) !important; /* Fondo claro para impresión */
+        color: var(--primary-dark) !important; /* Texto oscuro para impresión */
+        border: 1px solid var(--medium-gray);
+    }
+    .impact-phrases li {
+        padding: 5px;
+        margin-bottom: 3px;
+        font-size: 0.8em;
+        background: none;
+        border: none;
+        font-style: normal;
+        justify-content: flex-start;
+        color: var(--secondary-dark); /* Texto de frase en gris oscuro para impresión */
+    }
+    .channel-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 5px;
+        font-size: 0.8em;
+    }
+    .channel-item {
+        padding: 8px;
+        border-radius: 4px;
+        background-color: var(--white);
+        border: 1px solid var(--medium-gray);
+        color: var(--primary-dark);
+    }
+    .channel-item small {
+        font-size: 0.75em;
+        color: var(--secondary-dark);
+    }
+
+    /* Módulo 3 */
+    .timeline .week {
+        border-left: 3px solid var(--secondary-dark); /* Borde en gris oscuro */
+        padding: 5px 0 5px 10px;
+        margin-bottom: 8px;
+        background: none;
+        box-shadow: none;
         border-radius: 0;
     }
-
-    .feed-post-media {
-        min-height: 300px;
+    .timeline .week h3 {
+        font-size: 1em;
+        font-weight: bold;
+        color: var(--primary-dark) !important;
+    }
+    .timeline .week ul {
+        margin-top: 5px;
+    }
+    .timeline .week li {
+        padding: 3px 0;
+        margin-bottom: 2px;
+        font-size: 0.8em;
+        border: none;
+        background: none;
+        color: var(--secondary-dark);
+    }
+    .timeline .week li::before {
+        font-weight: normal;
+        color: var(--primary-dark);
+    }
+    .current-week-timeline {
+        border-color: var(--primary-dark) !important; /* Resalta en negro */
+    }
+    .progress-bar {
+        background-color: var(--primary-dark) !important; /* La barra de progreso en negro para impresión */
     }
 
-    .post-header {
-        padding: 10px;
-    }
 
-    .post-caption-comments {
-        padding: 10px;
+    /* Módulo 4 */
+    .results-table {
+        font-size: 0.8em;
     }
+    .results-table th, .results-table td {
+        padding: 5px 8px;
+        border-color: var(--medium-gray);
+    }
+    .results-table th {
+        background-color: var(--primary-dark) !important;
+        color: var(--white) !important;
+    }
+    /* Asegura que los colores de KPI se impriman */
+    .color-red, .color-yellow, .color-green {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-weight: bold;
+    }
+    /* Colores para impresión, si necesitas que sean diferentes de los de pantalla */
+    .color-red { color: var(--status-danger) !important; }
+    .color-yellow { color: var(--status-warning) !important; }
+    .color-green { color: var(--status-success) !important; }
 
-    .post-actions, .post-comment-input {
-        padding: 8px 10px;
-    }
 
-    #modal-overlay, #story-reel-viewer {
-        align-items: stretch;
-        justify-content: stretch;
+    /* Módulo 5 */
+    .team-members ul li, .toolbox ul li {
+        font-size: 0.85em;
+        margin-bottom: 3px;
+        color: var(--primary-dark);
     }
-    .close-overlay-btn {
-        top: 5px;
-        right: 5px;
-        font-size: 1.5em;
+    .team-members ul li small {
+        display: none;
+    }
+    .toolbox ul li a {
+        color: var(--secondary-dark) !important;
+        text-decoration: none !important;
+        font-weight: normal;
     }
 }
 
-@media (min-width: 768px) {
-    #app-container {
-        border: 1px solid #363636; /* Borde sutil para desktop */
+/* Para ocultar elementos específicos en web que solo son para print, y vice versa */
+@media screen {
+    .print-only {
+        display: none;
     }
 }
